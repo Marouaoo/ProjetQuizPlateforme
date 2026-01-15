@@ -1,0 +1,59 @@
+.settings-container {
+    background-color: #f7f7f7;
+    padding: 20px;
+    color: #333;
+    min-height: 91vh;
+    overflow-y: auto;
+    max-height: 91vh;
+}
+
+.settings-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.go-back {
+    display: flex;
+    flex-direction: row;
+    color: black;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s;
+    width: 200px;
+    margin-right: 35%;
+}
+
+h3 {
+    font-family: 'DisneyFont', sans-serif;
+    margin-left: 10px;
+    font-size: 20px;
+}
+
+h1 {
+    text-align: center;
+    font-family: 'DisneyFont', sans-serif;
+    font-weight: bold;
+    font-size: 45px;
+    width: 350px;
+}
+
+.account-settings, .stats-settings, .history-settings {
+    background-color: white;
+    margin: 10px 0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.account-settings, .stats-settings, .history-settings {
+    border-bottom: 1px solid #ddd;
+}
+
+.account-settings:last-child, .stats-settings:last-child, .history-settings:last-child {
+    border-bottom: none;
+}
+
+.settings-container > div {
+    margin-bottom: 15px;
+}

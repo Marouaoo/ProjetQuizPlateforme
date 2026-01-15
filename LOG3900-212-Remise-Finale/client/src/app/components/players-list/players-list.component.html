@@ -1,0 +1,28 @@
+<div class="players-list">
+    @for (player of players ; track player.socketId) {
+    <div class="player" (mouseover)="hoveredPlayerId = player.socketId; checkHostPlayerId()" (mouseleave)="hoveredPlayerId = null">
+        <div class="avatar-container">
+            <img [src]="getUserAvatar(player.avatar)" alt="{{ player.name }}" class="avatar" />
+        </div>
+        @if(player.socketId === kickedPlayerId){
+            <s class="strike-name">{{ player.name }}</s>
+        } @else {
+            <span class="player-name">{{ player.name }}</span>
+        }
+        @if(isHost && player.socketId !== hostPlayerId && hoveredPlayerId === player.socketId && player.socketId !== kickedPlayerId){
+            <button (click)="banPlayer(player.socketId)" class="kick-button">{{ "bannir" | translate }}</button>
+        }
+    </div>
+    }
+</div>
+@if (showKickModal) {
+    <div class="kicked-modal">
+        <div class="modal">
+            <p>{{ "Êtes-vous sûr de vouloir bannir ce joueur ?" | translate }}</p>
+            <div class="ban-buttons">
+                <button (click)="confirmBan()">{{ "Confirmer" | translate }}</button>
+                <button (click)="cancelBan()">{{ "Annuler" | translate }}</button>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,5 @@
+<h1>{{ 'Statistiques' | translate }}</h1>
+<h2>{{ 'Nombre de parties jouées:' | translate }} {{ getGames() }}</h2>
+<h2>{{ 'Nombre de parties gagnées:' | translate }} {{ getWonGames() }}</h2>
+<h2>{{ 'Moyenne de questions bien répondues:' | translate }} {{ getAverageAnswers().toFixed(2) }} %</h2>
+<h2>{{ 'Temps moyen par partie:' | translate }} {{ getAverageTime() }}</h2>

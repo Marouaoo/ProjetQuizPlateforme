@@ -1,0 +1,65 @@
+<div [ngClass]="{ 'tutorial-overlay': tutorialTrackerService.isInTutorial }">
+    <app-topbar></app-topbar>
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="elements">
+                    <h2>PolyQuiz</h2>
+                    @for (theme of themes; track theme) { @if (userService.user.theme === theme.id) {
+                    <img src="{{ theme.preview }}" alt="logo" width="250px" height="250px" />
+                    } }
+                    <button [ngClass]="{ 'visible-tutorial': tutorialTrackerService.currentStep === 2 }" routerLink="/joinGame">
+                        ✨ {{ 'Joindre une partie' | translate }} ✨
+                    </button>
+                    <button
+                        [ngClass]="{ 'visible-tutorial': tutorialTrackerService.currentStep === 5 }"
+                        class="create-game-button"
+                        routerLink="/createGame"
+                    >
+                        🌟 {{ 'Creer une partie' | translate }} 🌟
+                    </button>
+                    <button [ngClass]="{ 'visible-tutorial': tutorialTrackerService.currentStep === 9 }" routerLink="/admin">
+                        🏰 {{ 'Administrer les jeux' | translate }} 🏰
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="home-page-chat">
+        <app-chatroom></app-chatroom>
+    </div>
+
+    @if (isStreakModalVisible) {
+    <div class="modal-overlay">
+        <div class="modal streak-bonus-modal">
+            <h3>🎉 {{ 'dailyBonus' | translate }} 🎉</h3>
+            <p>Streak : {{ streak }} {{ 'day' | translate }}{{ streak > 1 ? 's' : '' }} 🔥</p>
+            <p>+{{ bonus }} {{ 'streak' | translate }}💰</p>
+        </div>
+    </div>
+    } @if (tutorialTrackerService.isInTutorial) {
+    <div class="tutorial-message">
+        @if (tutorialTrackerService.currentStep === 1) {
+        <p>{{ 'tuto1' | translate }}</p>
+        } @if (tutorialTrackerService.currentStep === 2) {
+        <p>{{ 'tuto2' | translate }}</p>
+        } @if (tutorialTrackerService.currentStep === 5) {
+        <p>{{ 'tuto5' | translate }}</p>
+        }@if (tutorialTrackerService.currentStep === 9) {
+        <p>{{ 'tuto9' | translate }}</p>
+        }
+    </div>
+    <div class="tutorial-buttons">
+        @if(tutorialTrackerService.currentStep === 12) {
+        <button (click)="tutorialTrackerService.resetTutorial()">{{ 'tutoClose' | translate }}</button>
+        } @else {
+        <button (click)="tutorialTrackerService.resetTutorial()">{{ 'tutoClose' | translate }}</button>
+        @if(tutorialTrackerService.currentStep === 1) {
+        <button (click)="tutorialTrackerService.nextTutorialStep()">{{ 'tutoStart' | translate }}</button>
+        } @else {
+        <button (click)="tutorialTrackerService.nextTutorialStep()">{{ 'tutoNext' | translate }}</button>
+        } }
+    </div>
+    }
+</div>

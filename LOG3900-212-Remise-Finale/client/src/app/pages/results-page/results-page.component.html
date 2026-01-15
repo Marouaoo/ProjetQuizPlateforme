@@ -1,0 +1,104 @@
+<div class="header">
+    <button (click)="leaveGame()" class="abandon">{{ 'Quitter' | translate }}</button>
+    <h1>{{ 'Résultats de la partie' | translate }}</h1>
+</div>
+<div class="results-grid">
+    <!-- Colonne gauche : podium + classement -->
+    <div class="results-left">
+        <!-- Podium -->
+        <div class="podium">
+            <h2 class="rank-title">🏆 {{ 'Podium des meilleurs joueurs' | translate }}</h2>
+            <div class="podium-wrapper">
+                @for (podium of podiumPlayers; track podium.player) {
+                <div class="podium-player" [ngClass]="podium.rank">
+                    <img [src]="getUserAvatar(podium.player.avatar)" class="podium-avatar" />
+                    <p class="podium-name">{{ podium.player.name }}</p>
+                    <p class="podium-points">{{ podium.player.totalPoints }} pts</p>
+                    @if(podium.rank === 'first'){
+                    <p class="podium-points">
+                        @if(podium.player.succeedChallenge) {
+                        {{ 100 + getWinnerPrice() + 20 }}
+                        } @else {
+                        {{ 100 + getWinnerPrice() }}
+                        } $
+                    </p>
+
+                    } @else {
+                    <p class="podium-points">
+                        {{ 20 + getConsolationPrice() }}
+                        $
+                    </p>
+                    } @if(podium.tied){
+                    <p class="podium-tied">{{ '(ex-aequo)' | translate }}</p>
+                    }
+                </div>
+                }
+            </div>
+        </div>
+
+        <!-- Classement complet -->
+        <span class="rank-title">{{ 'Classement complet des joueurs' | translate }}</span>
+        <div class="result-container">
+            <div class="ranking-card" *ngFor="let player of rankedPlayers" [class.my-card]="player.player.userId === userService.userId">
+                <div class="avatar-wrapper">
+                    <img [src]="getUserAvatar(player.player.avatar)" class="ranking-avatar" />
+                </div>
+                <div class="player-info">
+                    <h3>{{ player.player.name }}{{ player.player.isActive ? '' : ' - ABANDON' }}</h3>
+                    <p>{{ player.player.totalPoints }} pts</p>
+                    <p *ngIf="player.player.isActive && getRankTied(player.rank)">
+                        🥇 {{ 'Rang' | translate }} {{ player.rank }} {{ '(ex-aequo)' | translate }}
+                    </p>
+                    <p *ngIf="player.player.isActive && !getRankTied(player.rank)">🥇 {{ 'Rang' | translate }}{{ player.rank }}</p>
+                    <p>{{ 'Bonus 20% :' | translate }} {{ getBonusCount(player.player) }}</p>
+                    <p *ngIf="player.player.succeedChallenge">
+                        {{ getChallengeEmoji(player.player.challenge) }}
+                        {{ getChallengeNameFr(player.player.challenge) }} - {{ 'Bonus de 20 $' | translate }}
+                    </p>
+                    <p *ngIf="!player.player.succeedChallenge">
+                        {{ getChallengeEmoji(player.player.challenge) }} {{ getChallengeNameFr(player.player.challenge) }} -
+                        {{ 'Défi échoué' | translate }}
+                    </p>
+                    @if(player.rank === 1){
+                    <p class="podium-points">{{ 'Récompense de base : 100 $' | translate }}</p>
+                    <p>@if(gameService.game.price > 0) { {{ 'Récompense additionnelle :' | translate }} {{ getWinnerPrice() }} $ }</p>
+                    <p>{{ 'Récompense totale :' | translate }} {{ 100 + getWinnerPrice() + (player.player.succeedChallenge ? 20 : 0) }} $</p>
+
+                    } @else if(player.rank !== 0) {
+                    <p class="podium-points">{{ 'Récompense de base : 20 $' | translate }}</p>
+                    <p>@if(gameService.game.price > 0) { {{ 'Récompense additionnelle :' | translate }} {{ getConsolationPrice() }} $ }</p>
+                    <p>{{ 'Récompense totale :' | translate }} {{ 100 + getWinnerPrice() + (player.player.succeedChallenge ? 20 : 0) }} $</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (isConfirmationModalVisible) {
+    <div class="modal-overlay">
+        <div class="modal">
+            <app-confirmation-modal [modalOpen]="isConfirmationModalVisible" (click)="onCloseModal()"></app-confirmation-modal>
+        </div>
+    </div>
+    }
+
+    <div class="game-page-chat">
+        @if (chatOpen) {
+        <div class="chat-header">
+            <div class="tab" [class.active]="selectedChat === 'global'" (click)="toggleChat('global')">{{ 'Chat global' | translate }}</div>
+            <div class="tab" [class.active]="selectedChat === 'game'" (click)="toggleChat('game')">{{ 'Chat du jeu' | translate }}</div>
+            <p class="close-button" (click)="toggleChatVisibility()">X</p>
+        </div>
+        <div class="chat-content">
+            @if (selectedChat === 'global') {
+            <app-chatroom></app-chatroom>
+            } @if (selectedChat === 'game') {
+            <app-game-chatroom [playerName]="username" [gameId]="gameId"></app-game-chatroom>
+            }
+        </div>
+        } @else {
+        <div class="toggle-icon" (click)="toggleChatVisibility()">
+            <i [ngClass]="chatOpen ? '' : 'fas fa-comments'"></i>
+        </div>
+        }
+    </div>
+</div>

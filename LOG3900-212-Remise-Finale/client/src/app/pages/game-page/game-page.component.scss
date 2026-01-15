@@ -1,0 +1,427 @@
+.question-index {
+    font-size: 18px;
+    color: white;
+    font-family: 'DisneyFont', sans-serif;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    margin-bottom: 20px;
+    margin-top: 70px;
+    margin-left: 80px;
+    margin-right: 80px;
+    font-family: 'DisneyFont', sans-serif;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.abandon {
+    font-family: 'DisneyFont', sans-serif;
+    font-size: 24px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border-color: red;
+    background-color: red;
+    color: white;
+}
+
+.abandon:hover {
+    background-color: #ce0808;
+    cursor: pointer;
+}
+
+#timer {
+    font-size: 25px;
+    color: black;
+    border-radius: 20px;
+    padding: 15px 30px;
+    background-color: white;
+    font-family: 'DisneyFont', sans-serif;
+    border-color: 2px 0 #ffd700;
+}
+
+.question {
+    background: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 55%;
+    text-align: center;
+    font-size: 25px;
+    margin-bottom: 40px;
+}
+
+.value {
+    font-size: 18px;
+    color: #ffd700;
+    padding-top: 10px;
+}
+
+.answer-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.score {
+    font-size: 30px;
+    color: #005aac;
+    background-color: white;
+    font-family: 'DisneyFont', sans-serif;
+    margin-bottom: 40px;
+    padding: 20px 45px;
+    border-radius: 10px;
+}
+
+.answers {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.answer {
+    background: #025db2;
+    border: #025db2;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    width: 200px;
+    text-align: center;
+    font-family: 'DisneyFont', sans-serif;
+    width: 50%;
+    align-self: center;
+}
+
+.submit-answer:disabled {
+    cursor: none;
+    background: grey;
+}
+
+.answer:hover {
+    background-color: #ffd700;
+}
+
+.answer.selected-answer {
+    background-color: #ffd700;
+}
+
+.answer-container {
+    background: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    color: white;
+    border-radius: 10px;
+    width: 55%;
+    text-align: center;
+    font-size: 25px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.qre-answer,
+.qrl-answer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.qre-input {
+    font-size: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ffd700;
+    width: 15%;
+    margin: 10px 20px;
+    align-items: center;
+}
+
+.qrl-input {
+    font-size: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ffd700;
+    width: 85%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
+    align-items: center;
+}
+
+.hint-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    width: 50%;
+}
+
+.hint-button {
+    padding: 10px 15px;
+    font-size: 15px;
+    background-color: #fdbc41;
+    border-radius: 20px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-family: 'DisneyFont', sans-serif;
+
+    &:hover {
+        background-color: #ff8c00;
+    }
+}
+
+.submit-answer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 20px;
+    font-size: 20px;
+    background-color: #0056a5;
+    border-radius: 20px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    font-family: 'DisneyFont', sans-serif;
+}
+
+.submit-answer:hover {
+    background-color: #003979;
+}
+
+.chat-header {
+    display: flex;
+    background-color: none;
+    bottom: 44.7vh;
+    right: 0;
+    position: fixed;
+    z-index: 998;
+    width: 466px;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+
+.tab {
+    padding: 10px 20px;
+    height: 42px;
+    font-family: 'DisneyFont', sans-serif;
+    font-size: 1rem;
+    background-color: #f7f7f7;
+    color: rgb(35, 35, 35);
+    cursor: pointer;
+    transition:
+        background-color 0.3s,
+        color 0.3s;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    text-align: center;
+    justify-content: space-evenly;
+    flex: 1;
+    width: auto;
+}
+
+.tab:hover {
+    background-color: #d7d7d7;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.tab.active {
+    background-color: #d7d7d7;
+    color: black;
+    font-weight: bold;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.close-button {
+    font-size: 1.7rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-right: 7px;
+    font-weight: bold;
+    z-index: 999;
+    font-family: 'DisneyFont', sans-serif;
+    color: grey;
+    margin-top: 15px;
+}
+
+.toggle-icon {
+    padding: 15px;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    font-size: 50px;
+    transition: transform 0.3s ease;
+    background: transparent;
+    cursor: pointer;
+    color: black;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    padding: 20px;
+    text-align: center;
+    background-color: rgba(173, 172, 200, 0.8);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 600px;
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1001;
+    border-radius: 5px;
+}
+
+.modal p {
+    font-size: 18px;
+    color: white;
+    font-family: 'DisneyFont', sans-serif;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.modal-button-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.modal-button {
+    gap: 20px;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #0963ca;
+    text-align: center;
+    font-size: 20px;
+    font-family: 'DisneyFont', sans-serif;
+    margin-right: 15px;
+    margin-left: 15px;
+
+    &:hover {
+        background-color: darkblue;
+    }
+
+    &:active {
+        background-color: darkblue;
+    }
+}
+
+.correct-selected {
+    background-color: #96ef8f !important;
+    color: black;
+}
+
+.incorrect-selected {
+    background-color: #ce0808 !important;
+    color: black;
+}
+
+.correct-missing {
+    background-color: rgba(133, 241, 125, 0.5) !important;
+    color: black;
+}
+
+.eliminated-choice {
+    background-color: #cccccc !important;
+    color: white;
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.qre-slider-wrapper {
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.qre-slider {
+    margin-top: 10px;
+    width: 100%;
+    appearance: none;
+    height: 8px;
+    border-radius: 5px;
+    background: #ddd;
+    outline: none;
+    transition: background 0.3s;
+}
+
+.qre-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #034694;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.qre-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #034694;
+    cursor: pointer;
+}
+
+.slider-value {
+    margin-top: 8px;
+    font-weight: bold;
+}
+
+.correct-bg {
+    background-color: #5db257;
+}
+
+.partial-bg {
+    background-color: #c09350;
+}
+
+.incorrect-bg {
+    background-color: #d24646;
+}
+
+#timer.panic {
+    color: red !important;
+    font-weight: bold;
+}

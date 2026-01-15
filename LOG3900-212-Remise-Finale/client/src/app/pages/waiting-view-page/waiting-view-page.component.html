@@ -1,0 +1,103 @@
+<div class="waiting-room-container">
+    <div class="exit-button">
+        <button (click)="exitGame()">{{ "Quitter la partie" | translate }}</button>
+    </div>
+
+    <div class="game">
+        @if (isHost) {
+        <div class="game-status">
+            <button 
+                (mouseenter)="toggleHover(true)"
+                (mouseleave)="toggleHover(false)"
+                (click)="toggleGameLockState()"
+                [ngClass]="{ locked: isGameLocked, unlocked: !isGameLocked }"
+                [disabled]="isGameMaxed()"
+            >
+                {{ isGameLocked ? ('Fermée' | translate) : ('Ouverte' | translate)  }}
+            </button>
+        </div>
+        } @else {
+        <div class="game-status">
+            <h2>{{ "La partie est " | translate }}</h2>
+            <h2 class="locked-state">{{ isGameLocked ? ('fermée' | translate)  : ('ouverte' | translate) }}</h2>
+        </div>
+        }
+        <div class="game-details">
+            <div class="game-code">
+                <p>{{ "Code de la partie:" | translate }}</p>
+                <h1 class="room-code">{{ waitingRoomCode }}</h1>
+            </div>
+        </div>
+        <div class="players-list">
+            <app-players-list
+                [players]="players"
+                [isHost]="isHost"
+                [isGameMaxed]="isGameMaxed()"
+                [isGameLocked]="isGameLocked"
+                [gameId]="waitingRoomCode"
+            ></app-players-list>
+        </div>
+
+        @if(!isStartable) {
+        <div class="player-waiting">
+            <h2>{{ "En attente d'autres joueurs..." | translate }}</h2>
+            <h2>{{ players.length }} / {{ maxPlayers }}</h2>
+        </div>
+        } @else { 
+            @if(isHost && isGameLocked) {
+                <div class="host-waiting">
+                    <div class="button-container">
+                        <button (click)="startGame()">{{ "Commencer la partie" | translate }}</button>
+                    </div>
+                </div>
+            } @else {
+            <div class="player-waiting">
+                <h2>{{ "Vérouillez la salle pour commencer" | translate }}</h2>
+                <h2>{{ players.length }} / {{ maxPlayers }}</h2>
+            </div>
+            } 
+        } 
+    </div>
+
+    @if(showExitModal) {
+    <div class="exit-modal">
+        <div class="e-modal">
+            <h2>{{ dialogBoxMessage | translate}}</h2>
+            <p>{{ "Vous avez été bannis de la partie. Vous serez redirigé vers le menu principal sous peu." | translate }}</p>
+        </div>
+    </div>
+    } @if (isDelayModalVisible) {
+    <div class="modal-overlay">
+        <div class="d-modal">
+            <app-delay-modal [isHost]="isHost" (close)="onCloseModal()"></app-delay-modal>
+        </div>
+    </div>
+    } @if (isConfirmationModalVisible) {
+    <div class="modal-overlay">
+        <div class="d-modal">
+            <app-confirmation-modal [modalOpen]="isConfirmationModalVisible" (click)="onCloseModal()"></app-confirmation-modal>
+        </div>
+    </div>
+    }
+
+    <div class="game-page-chat">
+        @if (chatOpen) {
+        <div class="chat-header">
+            <div class="tab" [class.active]="selectedChat === 'global'" (click)="toggleChat('global')">{{ "Chat global" | translate }}</div>
+            <div class="tab" [class.active]="selectedChat === 'game'" (click)="toggleChat('game')">{{ "Chat du jeu" | translate }}</div>
+            <p class="close-button" (click)="toggleChatVisibility()">X</p>
+        </div>
+        <div class="chat-content">
+            @if (selectedChat === 'global') {
+            <app-chatroom></app-chatroom>
+            } @if (selectedChat === 'game') {
+            <app-game-chatroom [playerName]="username" [gameId]="waitingRoomCode"></app-game-chatroom>
+            }
+        </div>
+        } @else {
+        <div class="toggle-icon" (click)="toggleChatVisibility()">
+            <i [ngClass]="chatOpen ? '' : 'fas fa-comments'"></i>
+        </div>
+        }
+    </div>
+</div>

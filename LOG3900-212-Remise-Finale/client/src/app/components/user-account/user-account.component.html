@@ -1,0 +1,32 @@
+<div class="account-container bubble">
+    <div class="username-container">
+        <h2>{{ "Bonjour," | translate }} {{ userService.user.username }} !</h2>
+    </div>
+    <div class="status-container">
+        <h3>
+            {{ "Modifier votre statut:" | translate }}
+            <span>
+                <select [(ngModel)]="status" name="status" id="status" (change)="changeStatus(status)">
+                    @for (status of statusOptions; track status) { @if (status === 'connected') {
+                    <option [ngValue]="status">{{ "En ligne" | translate }} 🟢</option>
+                    } @else if (status === 'occupied') {
+                    <option [ngValue]="status">{{ "Occupé" | translate }} ⛔</option>
+                    } @else {
+                    <option [ngValue]="status">{{ "Hors ligne" | translate }} 🔘</option>
+                    } }
+                </select>
+            </span>
+        </h3>
+    </div>
+    <div class="virtual-money-container">
+        <h3>{{ "Argent virtuel restant:" | translate }} {{ userService.user.money }}$</h3>
+    </div>
+    <div class="settings-container">
+        <nav>
+            <a routerLink="/settings">{{ "Paramètres de compte" | translate }}</a>
+        </nav>
+    </div>
+    <div class="logout-container">
+        <button class="logout" (click)="logout()">{{ "Déconnexion" | translate }}</button>
+    </div>
+</div>

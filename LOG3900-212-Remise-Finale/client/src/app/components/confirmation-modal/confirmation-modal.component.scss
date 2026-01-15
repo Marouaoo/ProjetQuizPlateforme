@@ -1,0 +1,45 @@
+.delay-modal-box {
+    color: #c0c0c0;
+    border-radius: 5px;
+    font-size: 20px;
+    background-color: transparent;
+    position: relative;
+}
+
+h1 {
+    color: white;
+    font-family: 'DisneyFont', sans-serif;
+    font-size: 25px;
+    text-align: center;
+    padding: 20px;
+}
+
+.confirmation-buttons {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.confirmation-buttons button {
+    gap: 20px;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #2984ec;
+    text-align: center;
+    font-size: 20px;
+    font-family: 'DisneyFont', sans-serif;
+    margin-right: 15px;
+    margin-left: 15px;
+
+    &:hover {
+        background-color: rgb(48, 48, 178);
+    }
+    
+    &:active {
+        background-color:  rgb(48, 48, 178);
+    }
+}

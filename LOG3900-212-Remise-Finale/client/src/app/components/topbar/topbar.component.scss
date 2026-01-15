@@ -1,0 +1,76 @@
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color:#6699CC;
+    padding: 5px 15px;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+img {
+    width: 40px;
+    height: 40px; 
+    border-radius: 50%;
+    border: 2px solid white; 
+    object-fit: cover;
+}
+
+.status-icon {
+    position: absolute;
+    top: 36px;
+    left: 44px;
+    border: 2px solid white; 
+    border-radius: 50%;
+    background-color: transparent;
+    width: 14px; 
+    height: 14px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.status-icon div {
+    font-size: 15px; 
+}
+
+.profile-section .profile {
+    font-size: 20px;
+    font-family: 'DisneyFont', sans-serif;
+    text-decoration: none;
+    color: #fff;
+    background: none;
+    border: none;
+}
+
+.profile-section .profile:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li {
+    font-size: 20px;
+    font-family: 'DisneyFont', sans-serif;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.nav-links li a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}

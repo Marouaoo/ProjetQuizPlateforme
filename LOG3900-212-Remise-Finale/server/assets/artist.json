@@ -1,0 +1,71 @@
+{
+        "id": "ART101",
+        "title": "Guess The Artist",
+        "description": "Des questions basées sur les artistes musicaux",
+        "duration": 30,
+        "lastModification": "2023-09-09T20:20:39+00:00",
+        "isVisible": true,
+        "questions": [
+            {
+                "type": "QCM",
+                "text": "Quel artiste a créé le méga-hit Bad Guy?",
+                "points": 40,
+                "choices": [
+                    {
+                        "text": "Billie Eilish",
+                        "isCorrect": true
+                    },
+                    {
+                        "text": "Childish Gambino",
+                        "isCorrect": false
+                    },
+                    {
+                        "text": "Taylor Swift",
+                        "isCorrect": false
+                    },
+                    {
+                        "text": "Tyler The Creator",
+                        "isCorrect": false
+                    }
+                ]
+            },
+            {
+                "type": "QCM",
+                "text": "Quel est le nom du chanteur du groupe rock Linkin Park?",
+                "points": 40,
+                "choices": [
+                    {
+                        "text": "Adam Gontier",
+                        "isCorrect": false
+                    },
+                    {
+                        "text": "Amy Lee",
+                        "isCorrect": false
+                    },
+                    {
+                        "text": "Chester Bennington",
+                        "isCorrect": true
+                    },
+                    {
+                        "text": "Carrie Underwood",
+                        "isCorrect": false
+                    }
+                ]
+            },
+            {
+                "type": "QCM",
+                "text": "Vrai ou faux? Paul McCartney jouait la basse avec Les Beatles.",
+                "points": 20,
+                "choices": [
+                    {
+                        "text": "Oui",
+                        "isCorrect": true
+                    },
+                    {
+                        "text": "Non",
+                        "isCorrect": false
+                    }
+                ]
+            }
+        ]
+}

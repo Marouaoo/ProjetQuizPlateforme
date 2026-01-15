@@ -1,0 +1,4 @@
+export const DELAY_BEFORE_EMITTING_TIME = 1000;
+export const PANIC_DELAY_BEFORE_EMITTING_TIME = 250;
+export const WORD_MAX_LENGTH = 200;
+export const QRL_DURATION = 60;

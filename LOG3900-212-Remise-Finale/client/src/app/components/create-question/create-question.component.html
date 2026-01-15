@@ -1,0 +1,183 @@
+<div class="question-form">
+    <div class="question-header-container">
+        <div class="question-text-container">
+            <label for="questionText">Question: </label>
+            <input type="text" id="questionText" [(ngModel)]="questionService.question.text" name="questionText" required maxlength="60" />
+        </div>
+        <div class="points-container">
+            <label for="points">Points:</label>
+            <div class="points-box">
+                <button type="button" (click)="decrementPoints()" class="points-arrow" [disabled]="questionService.question.points === 10">-</button>
+                <div id="points" class="points-display">{{ questionService.question.points }}</div>
+                <button type="button" (click)="incrementPoints()" class="points-arrow" [disabled]="questionService.question.points === 100">+</button>
+            </div>
+        </div>
+
+        <div class="question-type-container">
+            <label for="questionType">{{ 'Type de question:' | translate }}</label>
+            <select
+                [(ngModel)]="questionService.question.type"
+                [ngModelOptions]="{ standalone: true }"
+                name="questionType"
+                id="questionType"
+                (change)="questionService.setQuestionType(questionService.question.type)"
+            >
+                <option [ngValue]="QCM">{{ 'Choix multiple (QCM)' | translate }}</option>
+                <option [ngValue]="QRE">{{ 'Réponse estimée (QRE)' | translate }}</option>
+                <option [ngValue]="QRL">{{ 'Réponse libre (QRL)' | translate }}</option>
+            </select>
+        </div>
+        @if(!questionService.question.imageUrl) {
+        <label
+            class="upload-button"
+            [class.disabled]="isImageUploading"
+            [for]="!isImageUploading ? 'fileInputQuestion' : ''"
+            title="Ajouter une image"
+        >
+            <i [class]="isImageUploading ? 'fas fa-spinner fa-spin' : 'fas fa-image'"></i>
+        </label>
+        <input
+            type="file"
+            id="fileInputQuestion"
+            accept="image/*"
+            (change)="onImageUpload($event)"
+            style="display: none"
+            multiple
+            [attr.aria-label]="'Upload image'"
+            [disabled]="isImageUploading"
+        />} @if(questionService.question.imageUrl) {
+        <div class="uploaded-image-container">
+            @if (isImage(questionService.question.imageUrl)) {
+            <img [src]="questionService.question.imageUrl" class="question-media" alt="fichier image" />
+            } @if (isImage(questionService.question.imageUrl)) {
+            <button class="delete-button" (click)="removeImage()">
+                <i class="fa fa-times fa-2x close-preview"></i>
+            </button>
+            }
+        </div>
+        } @if (imageUploadError) {
+        <div class="error-message">{{ imageUploadError }}</div>
+        }
+    </div>
+
+    @if (questionService.isQCM(questionService.question)) { @if (questionService.question.choices && questionService.question.choices.length
+    !=undefined) {
+
+    <button type="button" class="add-choice-btn" (click)="addChoice()" [disabled]="questionService.question.choices.length >= 4">
+        {{ 'Ajouter un choix' | translate }}
+    </button>
+    @for (choice of questionService.question.choices; track choice; let index = $index) {
+    <div class="choice-container">
+        <a class="choice-index">{{ index + 1 }}</a>
+        <input
+            type="text"
+            id="choiceText"
+            [(ngModel)]="choice.text"
+            [ngModelOptions]="{ standalone: true }"
+            placeholder="{{ 'Choix' | translate }} {{ index + 1 }}"
+            required
+        />
+        <button type="button" (click)="removeChoice(index)" [disabled]="questionService.question.choices.length <= 2">
+            {{ 'Retirer' | translate }}
+        </button>
+        <div class="is-correct-container">
+            <label for="isCorrect{{ index }}">{{ 'Bonne réponse?' | translate }}</label>
+            <input
+                id="checkbox{{ index }}"
+                type="checkbox"
+                name="correctAnswer{{ index }}"
+                [(ngModel)]="choice.isCorrect"
+                [ngModelOptions]="{ standalone: true }"
+            />
+        </div>
+    </div>
+    } @if (questionService.question.choices.length < 2) {
+    <div>{{ 'Il faut un minimum de 2 choix.' | translate }}</div>
+    } @else if(!questionService.validateNoChoiceDuplicates()) {
+    <div class="error-message">{{ 'Vos choix doivent être différents.' | translate }}</div>
+    } @else if(!questionService.validateGoodSelected()) {
+    <div class="error-message">{{ 'Vous devez avoir au moins 1 bonne et 1 mauvaise réponse.' | translate }}</div>
+    } @else {
+    <div class="error-message"></div>
+    } } } @else if (questionService.isQRE(questionService.question)) {
+    <div class="qre-container">
+        <div class="qre-section">
+            <label for="correctAnswer">{{ 'Bonne réponse:' | translate }}</label>
+            <input type="number" id="correctAnswer" [(ngModel)]="questionService.question.correctAnswer" name="correctAnswer" required />
+        </div>
+        <div class="qre-section">
+            <label for="minRange">{{ 'Borne inférieure:' | translate }}</label>
+            <input
+                type="number"
+                id="minRange"
+                [(ngModel)]="questionService.question.minRange"
+                name="minRange"
+                required
+                (input)="questionService.validateRange()"
+            />
+        </div>
+        <div class="qre-section">
+            <label for="maxRange">{{ 'Borne supérieure:' | translate }}</label>
+            <input
+                type="number"
+                id="maxRange"
+                [(ngModel)]="questionService.question.maxRange"
+                name="maxRange"
+                required
+                (input)="questionService.validateRange()"
+            />
+        </div>
+        <div class="qre-section">
+            <label for="tolerance">Tolerance:</label>
+            <input
+                type="number"
+                id="tolerance"
+                [(ngModel)]="questionService.question.tolerance"
+                name="tolerance"
+                required
+                [min]="0"
+                [max]="calculateTolerance()"
+            />
+        </div>
+    </div>
+
+    @if (questionService.question.minRange && questionService.question.maxRange && !questionService.validateInterval()) {
+    <div class="error-message">{{ "La bonne réponse doit être comprise dans l'intervalle." | translate }}</div>
+    } @if (questionService.question.minRange && questionService.question.maxRange && !questionService.validateRange()) {
+    <div class="error-message">{{ 'La borne inférieure doit être plus petite que la borne supérieure.' | translate }}</div>
+    } @if (questionService.question.minRange && questionService.question.maxRange && !questionService.validateRange()) {
+    <div class="error-message">{{ 'La borne supérieure doit être plus grande que la borne inférieure.' | translate }}</div>
+    } @if (questionService.question.minRange && questionService.question.maxRange && questionService.question.tolerance &&
+    questionService.question.tolerance < 0 || questionService.question.tolerance && questionService.question.tolerance > calculateTolerance()) {
+    <div class="error-message">{{ "La tolérance doit être plus grande que 0 et inférieure à 1/4 de l'intervalle." | translate }}</div>
+    } } @else {
+    <div class="error-message"></div>
+    } @if(questionService.isModify) {
+    <div class="modify-button-container">
+        <div>
+            <button type="button" (click)="cancelModif()" class="cancel-modif-btn">{{ 'Annuler' | translate }}</button>
+        </div>
+        <div>
+            <button
+                type="button"
+                (click)="createQuestion()"
+                class="create-question-btn"
+                [disabled]="!isButtonEnabled"
+                [ngClass]="{ enabled: enableButton() }"
+            >
+                {{ 'Confirmer la modification' | translate }}
+            </button>
+        </div>
+    </div>
+    } @else {
+    <button
+        type="button"
+        (click)="createQuestion()"
+        class="create-question-btn"
+        [disabled]="!isButtonEnabled"
+        [ngClass]="{ enabled: enableButton() }"
+    >
+        {{ 'Créer la question' | translate }}
+    </button>
+    }
+</div>

@@ -1,0 +1,135 @@
+<div class="header-container">
+    <button (click)="openExitConfirmationModal()" class="abandon">{{ 'Abandonner' | translate }}</button>
+    <span id="timer" [class.panic]="panicModeActivated"
+        >{{ 'Temps (sec):' | translate }} <span>{{ countdown }}</span>
+    </span>
+</div>
+
+<div class="game-container">
+    <div class="score">
+        <span
+            >{{ 'Score actuel:' | translate }} <span id="score">{{ player.totalPoints }}</span></span
+        >
+    </div>
+
+    <div class="question-index">{{ index + 1 }} / {{ game.quiz.questions.length }}</div>
+    <div class="question">
+        <div>{{ question?.text }} @if (gameService.isQRE(question!)) { [{{ question.minRange }}-{{ question.maxRange }}] }</div>
+        <div class="value">{{ 'Valeur:' | translate }} {{ question?.points }}</div>
+    </div>
+    @if(question && question.imageUrl){ @if (isImage(question.imageUrl)) {
+    <img [src]="question.imageUrl" class="question-media" alt="question-support" />
+    } }
+    <div class="answer-title">
+        <span>{{ 'Réponse :' | translate }}</span>
+    </div>
+    @if (gameService.isQCM(question!)) {
+    <div class="answers">
+        @for (choice of question.choices; track choice; let index = $index) {
+        <button
+            [disabled]="sentAnswer || choice.text === removedChoice"
+            [ngClass]="[
+                selectedChoices.includes(choice.text) ? 'selected-answer' : '',
+                getChoiceClass(choice),
+                choice.text === removedChoice ? 'eliminated-choice' : ''
+            ]"
+            class="answer"
+            (click)="onSelectChoice(choice.text)"
+        >
+            {{ index + 1 }}. {{ choice.text }}
+        </button>
+        }
+    </div>
+    @if ( !hintUsed && hintAvailable && !sentAnswer ) {
+    <div class="hint-container">
+        <button class="hint-button" (click)="buyHint()">💡 {{ 'Acheter un indice (-50 pts)' | translate }}</button>
+    </div>
+    } } @if (gameService.isQRE(question!) || gameService.isQRL(question!)) {
+    <div class="answer-container">
+        @if (gameService.isQRE(question!)) {
+        <div class="qre-slider-wrapper">
+            <input
+                type="range"
+                class="qre-slider"
+                [min]="question.minRange"
+                [max]="question.maxRange"
+                [(ngModel)]="qreAnswer"
+                [disabled]="sentAnswer"
+                [ngClass]="getQuestionStatusClass()"
+            />
+            <div class="slider-value">{{ 'Valeur choisie :' | translate }} {{ qreAnswer }}</div>
+        </div>
+
+        } @if (gameService.isQRL(question!)) {
+        <div class="qrl-answer">
+            <textarea
+                type="text"
+                class="qrl-input"
+                [disabled]="sentAnswer"
+                [(ngModel)]="qrlAnswer"
+                placeholder="{{ 'Entrez votre réponse ici' | translate }}"
+                [ngClass]="getQuestionStatusClass()"
+                maxlength="100"
+            >
+            </textarea>
+        </div>
+        }
+    </div>
+    }
+
+    <div class="submit">
+        <button class="submit-answer" [disabled]="sentAnswer" id="submitBtn" (click)="sendAnswer()" [disabled]="sentAnswer">
+            {{ 'Confirmer' | translate }}
+        </button>
+    </div>
+
+    <div class="game-page-chat">
+        @if (chatOpen) {
+        <div class="chat-header">
+            <div class="tab" [class.active]="selectedChat === 'global'" (click)="toggleChat('global')">{{ 'Chat global' | translate }}</div>
+            <div class="tab" [class.active]="selectedChat === 'game'" (click)="toggleChat('game')">{{ 'Chat du jeu' | translate }}</div>
+            <p class="close-button" (click)="toggleChatVisibility()">X</p>
+        </div>
+        <div class="chat-content">
+            @if (selectedChat === 'global') {
+            <app-chatroom></app-chatroom>
+            } @if (selectedChat === 'game') {
+            <app-game-chatroom [playerName]="username" [gameId]="gameId"></app-game-chatroom>
+            }
+        </div>
+        } @else {
+        <div class="toggle-icon" (click)="toggleChatVisibility()">
+            <i [ngClass]="chatOpen ? '' : 'fas fa-comments'"></i>
+        </div>
+        }
+    </div>
+
+    @if(showExitModal) {
+    <div class="modal-overlay">
+        <div class="modal">
+            <p>{{ 'Êtes-vous sûr de vouloir quitter la partie ?' | translate }}</p>
+            <div class="modal-button-container">
+                <button class="modal-button" (click)="closeExitModal()">{{ 'Annuler' | translate }}</button>
+                <button class="modal-button" (click)="leaveGame()">{{ 'Confirmer' | translate }}</button>
+            </div>
+        </div>
+    </div>
+    } @if (isDelayModalVisible) {
+    <div class="modal-overlay">
+        <div class="modal">
+            <app-delay-modal [isHost]="false" (close)="onCloseModal()"></app-delay-modal>
+        </div>
+    </div>
+    } @if (gameFinishedModal) {
+    <div class="modal-overlay">
+        <div class="modal">
+            <h1 style="font-family: 'DisneyFont', sans-serif; font-size: 40px; color: #005aac">
+                {{ "L'organisateur a dû mettre fin à la partie ..." | translate }}
+            </h1>
+            <p style="font-size: 22px; font-family: 'DisneyFont', sans-serif; color: white; margin-top: 20px">
+                {{ "Merci d'avoir joué !" | translate }}
+            </p>
+        </div>
+    </div>
+    }
+</div>

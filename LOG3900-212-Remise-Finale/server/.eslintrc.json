@@ -1,0 +1,29 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
+    "ignorePatterns": ["projects/**/*"],
+    "extends": ["../.eslintrc.json"],
+    "rules": {
+        "jsdoc/check-indentation": "off"
+    },
+    "globals": {
+        "NodeJS": true,
+        "Express": true,
+        "Mocha": true
+    },
+    "overrides": [
+        {
+            "files": ["*.spec.ts"],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": "off",
+                "no-magic-numbers": "off",
+                "max-lines": "off"
+            }
+        }
+    ],
+    "env": {
+        "node": true,
+        "jest": true
+    }
+}

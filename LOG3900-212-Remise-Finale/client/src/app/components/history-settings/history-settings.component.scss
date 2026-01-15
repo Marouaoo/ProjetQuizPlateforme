@@ -1,0 +1,13 @@
+h1, h2{
+    font-family: 'DisneyFont', sans-serif;
+}
+
+h1 {
+    padding-bottom: 20px;
+}
+
+.connection-history, .game-history {
+    overflow-y: auto;
+    max-height: 40vh;
+    padding: 20px;
+}

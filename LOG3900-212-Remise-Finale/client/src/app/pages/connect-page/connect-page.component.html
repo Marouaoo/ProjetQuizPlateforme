@@ -1,0 +1,49 @@
+<div class="login-container">
+    <form class="login-form">
+        <h2>Bienvenue à PolyQuiz</h2>
+        <h3>connexion</h3>
+        <div class="form-group">
+            <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Nom d'utilisateur"
+                [(ngModel)]="username"
+                (ngModelChange)="onUsernameChange($event)"
+                required
+                #usernameInput="ngModel"
+                [class.filled]="username.length > 0"
+            />
+            <label for="username">Nom d'utilisateur</label>
+        </div>
+        <div class="form-group">
+            <input
+                [type]="isPasswordVisible ? 'text' : 'password'"
+                id="password"
+                name="password"
+                placeholder="Mot de passe"
+                [(ngModel)]="password"
+                (ngModelChange)="onPasswordChange($event)"
+                required
+                #passwordInput="ngModel"
+                [class.filled]="password.length > 0"
+            />
+            <label for="password">Mot de passe</label>
+            <span class="toggle-password" (click)="togglePasswordVisibility()">
+                <i class="fa" [ngClass]="isPasswordVisible ? 'fa-eye' : 'fa-eye-slash'"></i>
+            </span>
+            <div class="forgotten-password" (click)="forgottenPassword()">
+                <p>Mot de passe oublié?</p>
+            </div>
+        </div>
+        @if (authenticationError) {
+            <div class="error-message">
+                <p>{{ authenticationError }}</p>
+            </div>
+        }
+        <button type="submit" [disabled]="!isButtonEnabled" [ngClass]="{ enabled: isButtonEnabled }" (click)="login()">Connexion</button>
+        <p class="signup-link">
+            <a (click)="createAccount()"> Pas de compte? Enregistre-toi</a>
+        </p>
+    </form>
+</div>

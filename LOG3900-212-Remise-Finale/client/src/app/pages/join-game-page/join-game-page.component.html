@@ -1,0 +1,80 @@
+<div [ngClass]="{ 'tutorial-overlay': tutorialTrackerService.isInTutorial }">
+    <div>
+        <app-topbar></app-topbar>
+        <div class="go-back">
+            <i (click)="goBack()" class="fa fa-arrow-left"></i>
+        </div>
+
+        <div class="join-game-form-section" [ngClass]="{ 'visible-tutorial': tutorialTrackerService.currentStep === 3 }">
+            <h2>{{ 'Joindre une partie' | translate }}</h2>
+            <div class="inputContainer">
+                <label for="accessCode">{{ "Code d'accès (4 chiffres)" | translate }}</label>
+                <div class="code-inputs">
+                    <input
+                        name="digit0"
+                        type="text"
+                        maxlength="1"
+                        class="code-input"
+                        [(ngModel)]="code[0]"
+                        (input)="moveToNext($event, 1)"
+                        #codeInput
+                    />
+                    <input
+                        name="digit1"
+                        type="text"
+                        maxlength="1"
+                        class="code-input"
+                        [(ngModel)]="code[1]"
+                        (input)="moveToNext($event, 2)"
+                        #codeInput
+                    />
+                    <input
+                        name="digit2"
+                        type="text"
+                        maxlength="1"
+                        class="code-input"
+                        [(ngModel)]="code[2]"
+                        (input)="moveToNext($event, 3)"
+                        #codeInput
+                    />
+                    <input name="digit3" type="text" maxlength="1" class="code-input" [(ngModel)]="code[3]" (input)="joinGame($event)" #codeInput />
+                </div>
+            </div>
+        </div>
+
+        <div class="errorMessage">{{ messageError | translate }}</div>
+
+        <div class="game-list-section" [ngClass]="{ 'visible-tutorial': tutorialTrackerService.currentStep === 4 }">
+            <div class="filter-buttons">
+                <app-game-list></app-game-list>
+            </div>
+        </div>
+    </div>
+
+    @if(modalOpen) {
+    <div class="modal-overlay">
+        <div class="modal">
+            <p>{{ 'Cette partie a un cout de ' | translate }} {{ gameService.game.price }}$.</p>
+            <p>{{ 'Êtes-vous sûr de vouloir y participer ?' | translate }}</p>
+            <div class="modal-button-container">
+                <button class="modal-button" (click)="closeModal()">{{ 'Annuler' | translate }}</button>
+                <button class="modal-button" (click)="accessGame()">{{ 'Confirmer' | translate }}</button>
+            </div>
+        </div>
+    </div>
+    } @if (tutorialTrackerService.isInTutorial) {
+    <div class="tutorial-message">
+        @if (tutorialTrackerService.currentStep === 3) {
+        <p>{{ 'tuto3' | translate }}</p>
+        } @if (tutorialTrackerService.currentStep === 4) {
+        <p>
+            {{ 'tuto4' | translate }}
+        </p>
+        }
+    </div>
+    <div class="tutorial-buttons">
+        <button (click)="tutorialTrackerService.resetTutorial()">{{ 'tutoClose' | translate }}</button>
+        <button (click)="tutorialTrackerService.nextTutorialStep()">{{ 'tutoNext' | translate }}</button>
+    </div>
+    }
+</div>

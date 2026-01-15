@@ -1,0 +1,50 @@
+<div class="game-list-container">
+    <h2>{{ "Parties disponibles" | translate }}</h2>
+
+    <div class="filter-buttons">
+        <button (click)="filter = 'all'" [class.active]="filter === 'all'">{{ "Toutes" | translate }}</button>
+        <button (click)="filter = 'waiting'" [class.active]="filter === 'waiting'">{{ "En salle d'attente" | translate }}</button>
+        <button (click)="filter = 'active'" [class.active]="filter === 'active'">{{ "En cours" | translate }}</button>
+    </div>
+
+    @if(filteredGames.length === 0) {
+        <div class="errorMessage">{{ messageError | translate }}</div>
+    }
+    
+    <div class="game-list">
+        @for(game of filteredGames; track game.id) {
+            <div class="game-card" [class.locked]="game.isLocked || !isAccessible(game)" (click)="openConfirmationModal(game)">
+                <h3>{{ game.quiz.title }}</h3>
+                <p>{{ "Joueurs en attente: " | translate }} {{ game.players.length }}</p>
+                @if(game.friendsOnly) {
+                    <p>{{ "Partie réservée aux amis de " | translate }} {{ getHost(game)?.name }}</p>
+                }
+                @if(game.price > 0) {
+                    <p>{{ "Coût d'entrée: " | translate }}{{ game.price }}$</p>
+                }
+                @if(game.isLocked){
+                <div class="lock-icon">
+                    <span class="fa fa-lock"></span><span id="locked">{{ " Verrouillé " | translate }}</span>
+                </div>
+                } @else {
+                <span class="fa fa-unlock" ></span>
+                }
+            </div>
+        }
+
+    </div>
+</div>
+
+
+@if(modalOpen) {
+    <div class="modal-overlay">
+        <div class="modal">
+            <p>{{ "Cette partie a un cout de " | translate }} {{ game.price }}$.</p>
+            <p>{{ "Êtes-vous sûr de vouloir y participer ?" | translate }}</p>
+            <div class="modal-button-container">
+                <button class="modal-button" (click)="closeModal()">{{ "Annuler" | translate }}</button>
+                <button class="modal-button" (click)="accessGame()">{{ "Confirmer" | translate }}</button>
+            </div>
+        </div>
+    </div>
+} 

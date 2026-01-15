@@ -1,0 +1,51 @@
+<div class="history-container">
+    <h1>{{ 'Historique' | translate }}</h1>
+
+    <!-- Historique des connexions/déconnexions -->
+    <section class="history-section">
+        <h2>🟢 {{ 'Historique des connexions et déconnexions' | translate }}</h2>
+        <ul class="connection-history">
+            @for (log of userService.user.history; track log) {
+            <li>
+                <span class="timestamp">{{ log.timestamp | date: 'short' }}</span> —
+                <span [ngClass]="log.event === connection ? 'connexion' : 'déconnexion'">
+                    {{ userService.user.username }}{{ (log.event === connection ? ' s’est connecté(e)' : ' s’est déconnecté(e)') | translate }}
+                </span>
+            </li>
+            }
+        </ul>
+    </section>
+
+    <!-- Historique des parties -->
+    <section class="history-section">
+        <h2>🎮 {{ 'Historique des parties' | translate }}</h2>
+        <ul class="game-history">
+            @for (game of userService.user.gameHistory; track game) {
+            <li>
+                @if(game) {
+                <span class="timestamp">{{ getDuration(game.start, game.end) }}</span>
+                <strong> - {{ game.quizName }}</strong>
+                @if( game.winners.length === 0 ){
+                <strong> — {{ 'Canceled' | translate }} </strong>} @else if(game.hasAbandoned) {<strong> — Abandon'</strong>}
+                <br />
+                <strong>{{ 'Organisateur :' | translate }} {{ getUsername(game.admin) }}</strong>
+                <br />
+                <strong>— {{ 'Joueur' | translate }}{{ game.players.length > 2 ? 's' : '' }}</strong>
+                <div class="result">
+                    @if(game.players.length !== 0) { @for( player of game.players ; track player) { @if(player !== game.admin) {
+                    <div>{{ this.getUsername(player) }}</div>
+                    } } } @else { N/A }
+                </div>
+                <strong>— {{ 'Gagnant' | translate }}{{ game.winners.length > 1 ? 's' : '' }}</strong>
+                <div class="result">
+                    @if(game.winners.length !== 0) { @for( winner of game.winners ; track winner) {
+                    <div>{{ this.getUsername(winner) }}</div>
+                    } } @else { N/A }
+                </div>
+                }
+                <br />
+            </li>
+            }
+        </ul>
+    </section>
+</div>

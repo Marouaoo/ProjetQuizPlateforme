@@ -1,0 +1,21 @@
+<div class="topbar-container">
+    <app-topbar></app-topbar>
+</div>
+<div class="settings-container">
+    <div class="settings-header">
+        <div class="go-back">
+            <i (click)="goBack()" class="fa fa-arrow-left"></i>
+        </div>
+        <h1>{{ "Paramètres" | translate }}</h1>
+    </div>
+
+    <div class="account-settings">
+        <app-account-settings></app-account-settings>
+    </div>
+    <div class="stats-settings">
+        <app-stats-settings></app-stats-settings>
+    </div>
+    <div class="history-settings">
+        <app-history-settings></app-history-settings>
+    </div>
+</div>

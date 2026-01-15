@@ -1,0 +1,7 @@
+<div class="confirmation-modal-box">
+    <h1>{{ confirmationMessage | translate }}</h1>
+    <div class="confirmation-buttons">
+        <button type="button" (click)="cancel()" class="cancel-button">{{ "Annuler" | translate }}</button>
+        <button type="button" (click)="confirm()" class="confirm-button">{{ "Confirmer" | translate }}</button>
+    </div>
+</div>

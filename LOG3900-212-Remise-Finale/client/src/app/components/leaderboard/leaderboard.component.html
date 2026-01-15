@@ -1,0 +1,55 @@
+<div class="leaderboard-container bubble">
+    <h2>🏆 {{ 'Voir le classement des joueurs' | translate }}</h2>
+    <div class="filters">
+        <div class="switch-container" (click)="showOnlyFriends = !showOnlyFriends">
+            <div class="switch" [class.active]="showOnlyFriends">
+                <div class="slider"></div>
+            </div>
+            <span class="switch-label">{{ 'Afficher uniquement les amis' | translate }}</span>
+        </div>
+    </div>
+
+    <div class="user-cards-scrollable">
+        @for (user of filteredLeaderboard; track user; let index = $index) {
+        <div class="user-card" [ngClass]="{ 'current-user': user._id === userService.userId }">
+            <div class="avatar-container">
+                <img [src]="getUserAvatar(user.avatar)" class="avatar" [alt]="user.username" />
+                <span
+                    class="status-dot"
+                    [ngClass]="{
+                        connected: user.status === 'connected',
+                        occupied: user.status === 'occupied',
+                        offline: user.status !== 'connected' && user.status !== 'occupied'
+                    }"
+                ></span>
+            </div>
+
+            <div class="user-info">
+                <div class="username">{{ user.username }}</div>
+            </div>
+            <div class="challenge-icons">
+                <span title="{{ '3 bonnes réponses consécutives' | translate }}" [class.completed]="hasCompletedChallenge(user._id, 1)"
+                    >🎯 {{ getNCompletedChallenge(user._id, 1) }}</span
+                >
+                <span title="{{ 'Réponse parfaite à une QRL' | translate }}" [class.completed]="hasCompletedChallenge(user._id, 2)"
+                    >🧠 {{ getNCompletedChallenge(user._id, 2) }}</span
+                >
+                <span title="{{ 'Toutes les QCM réussies' | translate }}" [class.completed]="hasCompletedChallenge(user._id, 3)"
+                    >🧩 {{ getNCompletedChallenge(user._id, 3) }}</span
+                >
+                <span title="{{ 'Toutes les réponses correctes' | translate }}" [class.completed]="hasCompletedChallenge(user._id, 4)"
+                    >🏃 {{ getNCompletedChallenge(user._id, 4) }}</span
+                >
+                <span title="{{ 'Réponse parfaite et rapide à une QRE' | translate }}" [class.completed]="hasCompletedChallenge(user._id, 5)"
+                    >🔐 {{ getNCompletedChallenge(user._id, 5) }}</span
+                >
+            </div>
+            <div class="ranking">
+                <div class="rank-icon">{{ getRankIcon(user._id) }}</div>
+                <div class="stars">⭐</div>
+                <div class="score">{{ (user.score * 5).toFixed(2) }}/5</div>
+            </div>
+        </div>
+        }
+    </div>
+</div>

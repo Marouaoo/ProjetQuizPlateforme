@@ -1,0 +1,133 @@
+<div
+    class="chat-container"
+    [class.open]="isChatOpen"
+    [class.home-page-chat]="isHomePage"
+    [class.waiting-room-chat]="isWaitingRoom"
+    [class.game-page-chat]="isGamePage"
+    [class.endgame-chat]="isEndGame"
+>
+    @if (isHomePage) {
+    <div>
+        <div class="toggle-icon" (click)="toggleChat()">
+            <i [ngClass]="isChatOpen ? '' : 'fas fa-comments'"></i>
+        </div>
+    </div>
+    } @if (isChatOpen) {
+    <div class="chat-open" id="chat-open">
+        <div class="chat-header">
+            <p class="close-chat" id="closeChat" (click)="closeChat()">x</p>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            @for (message of chatService.globalChat; track message) { @if(message.author ==='ADMIN') {
+            <div class="log-content">
+                <p>{{ message.text }}</p>
+                <span class="timestamp">{{ message.timestamp | date: 'HH:mm:ss' }}</span>
+            </div>
+            } @else {
+            <div
+                class="chat-message"
+                [ngClass]="{ sender: message.author === userService.user.username, receiver: message.author !== userService.user.username }"
+            >
+                <div class="chat-message-avatar">
+                    <img [src]="getUserAvatar(message.avatar)" alt="Avatar" class="avatar-img" />
+                </div>
+                <div class="chat-message-content">
+                    <strong>{{ message.author }}</strong>
+                    <p>{{ message.text }}</p>
+                    @if(message.fileUrl) {
+                    <div>
+                        @if(isImage(message.fileUrl)) {
+                        <img [src]="message.fileUrl" class="chat-media" alt="Image" loading="lazy" />
+                        } @if(isVideo(message.fileUrl)) {
+                        <video [src]="message.fileUrl" class="chat-media" controls>Your browser does not support the video tag.</video>
+                        }
+                    </div>
+                    }
+                    <span class="timestamp">{{ message.timestamp | date: 'HH:mm:ss' }}</span>
+                </div>
+            </div>
+            } }
+        </div>
+
+        <!-- Container d'entrée de message -->
+        <div class="input-container">
+            @if (previewFiles.length > 0) {
+            <div class="preview-container" (wheel)="onPreviewScroll($event)">
+                @for (preview of previewFiles; track preview; let i = $index) {
+                <div class="preview-item">
+                    @if (preview.type === 'image') {
+                    <img [src]="preview.previewUrl" alt="Preview" class="preview-media" />
+                    } @else {
+                    <video [src]="preview.previewUrl" class="preview-media" controls preload="metadata" playsinline></video>
+                    }
+                    <button class="remove-preview" (click)="removePreview(i)" title="Supprimer">×</button>
+                </div>
+                }
+            </div>
+            }
+            <div class="message-input-wrapper">
+                <input
+                    id="messageInput"
+                    placeholder="{{ 'Votre message' | translate }}"
+                    [(ngModel)]="messageText"
+                    (keydown.enter)="sendMessage()"
+                    maxlength="200"
+                    type="text"
+                    [disabled]="isForbiddenWord"
+                    [ngClass]="{ 'forbidden-border': isForbiddenWord }"
+                />
+                <div class="input-actions">
+                    <div class="media-upload-buttons">
+                        <label
+                            class="upload-button"
+                            [class.disabled]="isImageUploading"
+                            [for]="!isImageUploading ? 'imageUpload' : ''"
+                            title="Ajouter une image"
+                        >
+                            <i [class]="isImageUploading ? 'fas fa-spinner fa-spin' : 'fas fa-image'"></i>
+                        </label>
+                        <input
+                            type="file"
+                            id="imageUpload"
+                            accept="image/*"
+                            (change)="onImageUpload($event)"
+                            style="display: none"
+                            multiple
+                            [attr.aria-label]="'Upload image'"
+                            [disabled]="isImageUploading"
+                        />
+
+                        <label
+                            class="upload-button"
+                            [class.disabled]="isVideoUploading"
+                            [for]="!isVideoUploading ? 'videoUpload' : ''"
+                            title="Ajouter une vidéo"
+                        >
+                            <i [class]="isVideoUploading ? 'fas fa-spinner fa-spin' : 'fas fa-video'"></i>
+                        </label>
+                        <input
+                            type="file"
+                            id="videoUpload"
+                            accept="video/*"
+                            (change)="onVideoUpload($event)"
+                            style="display: none"
+                            multiple
+                            [attr.aria-label]="'Upload video'"
+                            [disabled]="isVideoUploading"
+                        />
+                    </div>
+                    <button
+                        class="send-message-button"
+                        (click)="sendMessage()"
+                        [disabled]="(!messageText.trim() && previewFiles.length === 0) || isUploading"
+                        title="Envoyer"
+                        [attr.aria-label]="'Send message'"
+                    >
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div>

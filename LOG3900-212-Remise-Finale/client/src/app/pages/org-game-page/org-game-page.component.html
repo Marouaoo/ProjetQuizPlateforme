@@ -1,0 +1,185 @@
+<div class="header-container">
+    <button (click)="openExitConfirmationModal()" class="abandon">{{ 'Abandonner' | translate }}</button>
+    <div class="timer-container">
+        <span id="timer" [ngClass]="{ 'panic-timer': panicModeActivated }">
+            {{ 'Temps (sec):' | translate }} <span>{{ countdown }}</span>
+        </span>
+        <button class="panic-button" (click)="activatePanicMode()" *ngIf="!panicModeActivated && panicModeAvailable">
+            {{ 'Activer mode panique' | translate }}
+        </button>
+        <button class="pause-button" (click)="togglePause()">
+            {{ isPaused ? ('Reprendre' | translate) : ('Pause' | translate) }}
+        </button>
+    </div>
+</div>
+
+<div class="game-container">
+    <div class="question-index">{{ index + 1 }} / {{ game.quiz.questions.length }}</div>
+    <div class="question">
+        <div>{{ question?.text }}</div>
+        <div class="value">{{ 'Valeur:' | translate }} {{ question?.points }}</div>
+    </div>
+
+    @if(question && question.imageUrl){ @if (isImage(question.imageUrl)) {
+    <img [src]="question.imageUrl" class="question-media" alt="question-support" />
+    } }
+
+    <div class="result-container">
+        <div class="left-container">
+            <div class="histogram-title">{{ 'Points accordés par joueur :' | translate }}</div>
+            @for (playerId of getActivePlayerIds(); track playerId) {
+            <div class="bar-container">
+                <span class="username-label">{{ getPlayerUsername(playerId) }}</span>
+                <div class="bar" [ngStyle]="{ width: getPointsBarWidth(playerId), 'background-color': 'dodgerblue' }"></div>
+                <span class="count">{{ pointsAwardedPerPlayer[playerId] || 0 }}</span>
+            </div>
+            }
+        </div>
+        <div class="right-container">
+            <div class="qcm-data">
+                @if(gameService.isQCM(question!)){
+                <div class="answers">
+                    <div class="histogram-title">{{ 'Choix possible:' | translate }}</div>
+                    @for (choice of question.choices; track choice; let index = $index) {
+                    <button [ngClass]="{ 'correct-answer': choice.isCorrect }" class="answer">{{ index + 1 }}. {{ choice.text }}</button>
+                    }
+                </div>
+                <div class="qcm-histogram">
+                    <div class="histogram-title">{{ 'Répartition des réponses :' | translate }}</div>
+                    @for (entry of getQCMAnswerDistribution() | keyvalue; track entry) {
+                    <div class="bar-container">
+                        <span class="label">{{ entry.key }}</span>
+                        <div class="bar" [ngStyle]="{ width: getBarWidthFromCount(entry.value), 'background-color': getBarColor(entry.key) }"></div>
+                        <span class="count">{{ entry.value }}</span>
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+
+            @if (gameService.isQRE(question!)) {
+            <div class="histogram-title">{{ 'Répartition des réponses :' | translate }}</div>
+            <div class="bar-container">
+                <span class="label">{{ 'Exactes' | translate }}</span>
+                <div class="bar" [ngStyle]="{ width: getBarWidthFromCount(qreDistribution.exact), 'background-color': 'green' }"></div>
+                <span class="count">{{ qreDistribution.exact }}</span>
+            </div>
+            <div class="bar-container">
+                <span class="label">{{ 'Partiellement correctes' | translate }}</span>
+                <div class="bar" [ngStyle]="{ width: getBarWidthFromCount(qreDistribution.partial), 'background-color': 'orange' }"></div>
+                <span class="count">{{ qreDistribution.partial }}</span>
+            </div>
+            <div class="bar-container">
+                <span class="label">{{ 'Incorrectes' | translate }}</span>
+                <div class="bar" [ngStyle]="{ width: getBarWidthFromCount(qreDistribution.incorrect), 'background-color': 'red' }"></div>
+                <span class="count">{{ qreDistribution.incorrect }}</span>
+            </div>
+            } @if(gameService.isQRL(question!)) {
+            <div class="qrl-title">{{ 'Évaluer les réponses :' | translate }}</div>
+            @for (userId of qrlResponses | keyvalue; track userId) { @if(qrlResponsesStatus[userId.key]) {
+            <div
+                [ngClass]="{
+                    correct: qrlResponsesStatus[userId.key] === CORRECT,
+                    partial: qrlResponsesStatus[userId.key] === PARTIALLY_CORRECT,
+                    incorrect: qrlResponsesStatus[userId.key] === INCORRECT
+                }"
+            >
+                <p class="qrl-user-name">{{ getPlayerUsername(userId.key) }} :</p>
+                <p class="qrl-text">{{ userId.value }}</p>
+            </div>
+            } @else {
+            <div>
+                <p class="qrl-user-name">{{ getPlayerUsername(userId.key) }} :</p>
+                <p class="qrl-text">{{ userId.value }}</p>
+                <button class="qrl-button-c" [disabled]="qrlResponsesStatus[userId.key]" (click)="evaluateQRLAnswer(userId.key, 100)">
+                    {{ 'Correct' | translate }}
+                </button>
+                <button class="qrl-button-p" [disabled]="qrlResponsesStatus[userId.key]" (click)="evaluateQRLAnswer(userId.key, 50)">
+                    {{ 'Partiellement correct' | translate }}
+                </button>
+                <button class="qrl-button-i" [disabled]="qrlResponsesStatus[userId.key]" (click)="evaluateQRLAnswer(userId.key, 0)">
+                    {{ 'Incorrect' | translate }}
+                </button>
+            </div>
+            } } }
+        </div>
+    </div>
+
+    <div class="submit">
+        @if(isLastQuestion){<button class="next-question" [disabled]="!canClickNext()" id="nextQuestion" (click)="endGame()">
+            {{ 'Terminer la partie' | translate }}
+        </button>
+        } @else {<button class="next-question" id="nextQuestion" [disabled]="!canClickNext()" (click)="nextQuestion()">
+            {{ 'Prochaine question' | translate }}
+        </button>
+        }
+    </div>
+
+    @if(showExitModal) {
+    <div class="modal-overlay">
+        <div class="modal">
+            <h2>{{ 'En quittant, vous mettez fin à la partie.' | translate }}</h2>
+            <p>{{ 'Êtes-vous sûr de vouloir quitter la partie ?' | translate }}</p>
+            <div class="modal-button-container">
+                <button class="modal-button" (click)="closeExitModal()">{{ 'Annuler' | translate }}</button>
+                <button class="modal-button" (click)="leaveGame()">{{ 'Confirmer' | translate }}</button>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+
+<div class="players-list">
+    <div class="list-title">{{ 'Joueurs actifs:' | translate }}</div>
+    <div class="players-container">
+        @for (user of players; track user) {
+        <div class="player">
+            <div class="avatar-name">
+                <div class="avatar-container">
+                    <img [src]="getUserAvatar(user.avatar)" class="avatar" />
+                </div>
+                <span class="player-name" [class.inactive]="!user.isActive">{{ user.name }}</span>
+            </div>
+            <span class="player-score"> Points: {{ user.totalPoints }}</span>
+        </div>
+        }
+    </div>
+</div>
+
+<div class="game-page-chat">
+    @if (chatOpen) {
+    <div class="chat-header">
+        <div class="tab" [class.active]="selectedChat === 'global'" (click)="toggleChat('global')">{{ 'Chat global' | translate }}</div>
+        <div class="tab" [class.active]="selectedChat === 'game'" (click)="toggleChat('game')">{{ 'Chat du jeu' | translate }}</div>
+        <p class="close-button" (click)="toggleChatVisibility()">X</p>
+    </div>
+    <div class="chat-content">
+        @if (selectedChat === 'global') {
+        <app-chatroom></app-chatroom>
+        } @if (selectedChat === 'game') {
+        <app-game-chatroom [playerName]="username" [gameId]="gameId"></app-game-chatroom>
+        }
+    </div>
+    } @else {
+    <div class="toggle-icon" (click)="toggleChatVisibility()">
+        <i [ngClass]="chatOpen ? '' : 'fas fa-comments'"></i>
+    </div>
+    }
+</div>
+
+@if (isDelayModalVisible) {
+<div class="modal-overlay">
+    <div class="d-modal">
+        <app-delay-modal [isHost]="true" (close)="onCloseModal()"></app-delay-modal>
+    </div>
+</div>
+} @if (gameFinishedModal) {
+<div class="modal-overlay">
+    <div class="modal">
+        <h1 style="font-family: 'DisneyFont', sans-serif; font-size: 40px; color: #005aac">
+            {{ 'Tous les joueurs ont quitté la partie !' | translate }}
+        </h1>
+        <p style="font-size: 22px; font-family: 'DisneyFont', sans-serif; color: white; margin-top: 20px">{{ 'Vous serez redirigé.' | translate }}</p>
+    </div>
+</div>
+}

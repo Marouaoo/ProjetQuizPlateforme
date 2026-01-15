@@ -1,0 +1,27 @@
+#ignoring .vscode folder but we keep some files for debuging
+/.vscode/chrome
+/.vs/
+
+package-lock.json
+.DS_Store
+
+# Code Coverage Folder
+coverage/
+
+#Node Modules
+/node_modules
+
+# Node
+node_modules/
+coverage/
+
+# Angular builds
+build/
+dist/
+out/
+client/build/
+
+# Secrets
+environment*.ts
+*.exe
+

@@ -1,0 +1,37 @@
+<div class="topbar" id="topbar">
+    <div class="profile-section">
+        <img [src]="getUserAvatar(userService.user.avatar)" alt="Avatar" class="avatar-img" />
+        <div class="status-icon">
+            @if (userService.user.status === 'connected') {
+            <div>🟢</div>
+            } @else if (userService.user.status === 'occupied') {
+            <div>⛔</div>
+            } @else {
+            <div>🔘</div>
+            }
+        </div>
+        <a class="profile" (click)="openUserAccount()"> {{ "Mon compte" | translate }}</a>
+    </div>
+    @if (isUserAccountOpen) {
+    <div class="user-account-container" id="user-account-container">
+        <app-user-account></app-user-account>
+    </div>
+    }
+
+    <ul class="nav-links">
+        <li><a routerLink="/homePage">{{ "Page d'accueil👑" | translate }}</a></li>
+        <li><a (click)="openFriends()">{{ "Recherche amis🔎" | translate }}</a></li>
+        <li><a (click)="openLeaderboard()">{{ "Classement🏆" | translate }}</a></li>
+        @if (isFriendsOpen) {
+        <div class="user-friends-container" id="friends-container">
+            <app-friends></app-friends>
+        </div>
+        }
+        @if (isLeaderboardOpen) {
+            <div class="user-leaderboard-container" id="leaderboard-container">
+                <app-leaderboard></app-leaderboard>
+            </div>
+        }
+        <li><a routerLink="/admin">{{ "Administration🏰" | translate }}</a></li>
+    </ul>
+</div>

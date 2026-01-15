@@ -1,0 +1,17 @@
+<div class="delay-modal-box">
+    <h1>{{ delayMessage | translate }}</h1>
+    <h1>{{ delay ? delay : ' ' }}</h1>
+    @if(!isHost && !isGamePage){ @if(playerService.player.challenge === challenge1) {
+    <h2>{{ "Avoir 3 bonnes réponses conséuctives." | translate }}</h2>
+    } @else if(playerService.player.challenge === challenge2) {
+    <h2>{{ "Répondre parfaitement à une question à réponse longue." | translate }}</h2>
+    }@else if(playerService.player.challenge === challenge3) {
+    <h2>{{ "Répondre correctement à toutes les questions à choix multiple de la partie." | translate }}</h2>
+    }@else if(playerService.player.challenge === challenge4) {
+    <h2>{{ "Faire un sans faute." | translate }}</h2>
+    }@else if(playerService.player.challenge === challenge5) {
+    <h2>{{ "Répondre le premier et parfaitement à une question à réponse estimée." | translate }}</h2>
+    }
+    <h3>{{ "En accomplissant votre défi de partie, vous obtiendrez un bonus de 20 pièces." | translate }}</h3>
+    }
+</div>

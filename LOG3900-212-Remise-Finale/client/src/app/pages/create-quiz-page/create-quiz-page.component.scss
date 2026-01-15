@@ -1,0 +1,333 @@
+.go-back {
+    position: absolute;
+    top: 80px;
+    left: 30px;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.create-qcm-title {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.create-qcm-title h1 {
+    font-family: 'DisneyFont', sans-serif;
+    color: white;
+    font-size: 2.5rem;
+}
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+.top-container {
+    border-color: #FFD700; 
+    font-family: 'DisneyFont', sans-serif;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 70%;
+    margin: auto;
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10px;
+}
+
+.general-info {
+    border-color: #FFD700; 
+    font-family: 'DisneyFont', sans-serif;
+    margin: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 3;
+}
+
+.category-container {
+    flex: 1;
+    align-items: flex-start;
+}
+
+.questions-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 60vh;
+}
+
+.create-question-container {
+    color: #FFD700; 
+    font-family: 'DisneyFont', sans-serif;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 40%;
+    margin: 10px;
+    text-align: center;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #ccc;
+}
+
+label {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #FFD700;
+    font-family: 'DisneyFont', sans-serif;
+}
+
+#title {
+    background-color: #e4e6eb; 
+    border: 1px solid #FFD700; 
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+    width: 300px;
+    margin: 10px;
+}
+
+#description {
+    background-color: #e4e6eb; 
+    border: 1px solid #FFD700; 
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+    width: 700px;
+    margin: 10px;
+}
+
+.time-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.time-box {
+    display: flex;
+    align-items: center;
+  }
+
+.time-arrow {
+    background-color: #034694; 
+    color: #FFD700; 
+    font-family: 'DisneyFont', sans-serif;
+    padding: 4px 6px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 1 rem;
+    transition: background-color 0.3s;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: space-between;
+}
+
+.time-display {
+    font-size: 1.2rem;
+    color: white;
+    font-family: 'DisneyFont', sans-serif;
+}
+
+input[type="submit"], button {
+    background-color: #034694; 
+    color: #FFD700; 
+    font-family: 'DisneyFont', sans-serif;
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s;
+    margin-top: 15px;
+    align-items: center;
+}
+
+input[type="submit"]:hover, button:hover {
+    background-color: #003c72; 
+    color: #FFF; 
+}
+
+.submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 20px;
+    left: 44%;
+    position: absolute;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-top: 15px;
+}
+
+h3, p {
+    font-family: 'DisneyFont', sans-serif;
+    color: white;
+}
+
+.list-header {
+    display: flex;
+    background-color: none;
+    z-index: 1000;
+    width: 100%;
+    box-sizing: border-box; 
+    align-items: center;
+    justify-content: center;
+}
+
+.tab {
+    padding: 10px 15px;
+    font-family: 'DisneyFont', sans-serif;
+    font-size: 1.5rem;
+    color: #FFD700; 
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 10px;
+    text-align: center;
+    justify-content: space-evenly;
+    flex: 1; 
+    width: auto; 
+}
+
+.tab:hover {
+    background-color: #034694;
+    border-radius: 10px;
+}
+
+.tab.active {
+    background-color: #034694;
+    border-radius: 10px;
+}
+
+.quiz-modify, .quiz-add {
+    margin-right: 5px;
+}
+
+.question-list {
+    color: #FFD700; 
+    font-family: 'DisneyFont', sans-serif;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 40%;
+    margin: 10px;
+    text-align: center;
+}
+
+.question-list h1 {
+    font-family: 'DisneyFont', sans-serif;
+    color: #FFD700; 
+    font-size: 1.5rem;
+} 
+
+.question-list .scrollable-box {
+    height: 500px;
+    overflow-y: auto;
+    scrollbar-width: thin; 
+    scrollbar-color: #888 #ccc; 
+}
+
+.question-box {
+    font-family: 'DisneyFont', sans-serif;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+
+ul, p {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 50px;
+}
+
+.question-p {
+    font-size: 1.3rem;
+    font-family: 'DisneyFont', sans-serif;
+}
+
+.points-p {
+    font-size: 1.1rem;
+    font-family: 'DisneyFont', sans-serif;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal h3 {
+    font-size: 20px;
+    font-family: 'DisneyFont', sans-serif;
+    margin-bottom: 20px;
+    color: black;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 20px;
+}
+
+.modal-actions button {
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.modal-actions .button-common {
+    background-color: #034694;
+    color: white;
+}
+
+.modal-actions .button-common:hover {
+    background-color: #003979;
+}
+
+.category-options label {
+    display: block;
+    margin: 5px 0;
+}
+
+.category-options input {
+    margin-right: 10px;
+}
+
+.selected-categories {
+    margin-top: 10px;
+}

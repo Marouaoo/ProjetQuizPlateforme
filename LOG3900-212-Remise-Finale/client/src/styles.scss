@@ -1,0 +1,529 @@
+@import '~@fortawesome/fontawesome-free/css/all.css';
+
+@font-face {
+    font-family: 'DisneyFont';
+    src: url('./assets/fonts/waltograph.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  body {
+    font-family: 'DisneyFont', sans-serif;
+    background-image: linear-gradient(#005AAC, #9380fe);
+    background-size: cover;
+  }
+
+  html, body {
+    height: 100%; 
+    margin: 0; 
+    overflow: hidden;
+  }
+
+  [data-theme='dark'] {    
+    .section .container .row .elements h2 {
+      color: #68037d !important;
+    }
+
+    .topbar {
+      background-color: #242424 !important;
+    }
+
+    .list-header .tab {
+      color: #fff !important;
+
+      &:hover {
+        background-color: #424040 !important;
+      }
+      
+      &.active {
+        background-color: #424040 !important;
+      }
+
+    }
+
+    text {
+      color: #fff !important;
+    }
+
+    button {
+      background-color: #68037d !important;
+      border:  #440850 !important;
+      color: #fff !important;
+
+      &:hover {
+        background-color: #440850  !important;
+      }
+
+      &:active {
+        background-color: #440850  !important;
+      }
+
+      &:focus {
+        background-color: #440850 !important;
+      }
+    }
+
+    background-image: linear-gradient(#9380fe, rgb(0, 0, 0));
+
+    .game-content {
+      background-color: #242424 !important;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) !important;
+
+      .game-section-one, .game-section-two {
+        background-color: #424040 !important;
+      }
+    }
+
+    .players-container {
+      background-color: #242424 !important;
+
+      .player {
+        background-color: #424040 !important;
+      }
+
+      .player-score {
+        color: #fff !important;
+      }
+    }
+
+    .toggle-container .toggle-label {
+      color: white !important;
+    }
+
+    .games-container .available-title {
+      color: white !important;
+    }
+
+    .podium-player  {
+      background: #242424 !important;
+    }
+  }
+
+ [data-theme='donald'] {
+    .section .container .row .elements h2 {
+      color: #fead2a !important;
+    }
+
+    .topbar {
+      background-color: #3371c9 !important;
+    }
+
+    button {
+      background-color: #3371c9 !important;
+      border: #265393 !important;
+      color: white !important;
+
+      &:hover {
+        background-color: #265393  !important;
+      }
+
+      &:active {
+        background-color: #265393  !important;
+      }
+
+      &:focus {
+        background-color: #265393 !important;
+      }
+    }
+
+    background-image: linear-gradient(#4683d7, rgb(251, 169, 125));
+
+    .list-header .tab {
+      color: #fff !important;
+
+      &:hover {
+        background-color: #FFD700 !important;
+      }
+      
+      &.active {
+        background-color: #FFD700 !important;
+      }
+
+    }
+
+    text {
+      color: #fff !important;
+    }
+
+    .game-content {
+      background-color: #658cfa !important;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) !important;
+
+      .game-section-one, .game-section-two {
+        background-color: #4c72da !important;
+      }
+    }
+
+    .toggle-container .toggle-label {
+      color: #ffd700 !important;
+    }
+
+    .players-container {
+      background-color: #5578d7 !important;
+
+      .player {
+        background-color:  #445fab  !important;
+      }
+
+      .player-score {
+        color: #fff !important;
+      }
+    }
+
+    .podium-player  {
+      background: #658cfa !important;
+    }
+  }
+
+  [data-theme='ariel'] {
+    .section .container .row .elements h2 {
+      color: #378d68 !important;
+    }
+
+    .topbar {
+      background-color:  #a56be3 !important;
+    }
+
+    .list-header .tab {
+      color: #fff !important;
+
+      &:hover {
+        background-color: #51a3ae !important;
+      }
+      
+      &.active {
+        background-color: #51a3ae !important;
+      }
+
+    }
+
+    text {
+      color: #fff !important;
+    }
+
+    button {
+      background-color: #8650c0 !important;
+      border: #4b2a6f !important;
+      color: white !important;
+
+      &:hover {
+        background-color: #4b2a6f !important;
+      }
+
+      &:active {
+        background-color: #4b2a6f !important;
+      }
+
+      &:focus {
+        background-color: #4b2a6f !important;
+      }
+    }
+
+    background-image: linear-gradient(#68cedb, #a56be3);
+
+    .game-content {
+      background-color: #7240a7 !important;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) !important;
+
+      .game-section-one, .game-section-two {
+        background-color: #5a3087 !important;
+      }
+    }
+
+    .players-container {
+      background-color: #7d50ad !important;
+
+      .player {
+        background-color: #694392  !important;
+      }
+
+      .player-score {
+        color: #fff !important;
+      }
+    }
+
+     .podium-player  {
+      background: #7240a7 !important;
+    }
+  }
+
+  [data-theme='cinderella'] {
+    .section .container .row .elements h2 {
+      color: #ffd700 !important;
+    }
+
+     background-image: linear-gradient(#ffc2ee, rgb(127, 172, 235));
+
+    .topbar {
+      background-color:  rgb(164, 199, 248) !important;
+    }
+
+    button {
+      background-color: #dc64ba !important;
+      border: #9a4081 !important;
+      color: white !important;
+
+      &:hover {
+        background-color: #9a4081 !important;
+      }
+
+      &:active {
+        background-color: #9a4081 !important;
+      }
+
+      &:focus {
+        background-color: #9a4081 !important;
+      }
+    }
+
+    .list-header .tab {
+      color: #fff !important;
+
+      &:hover {
+        background-color: #82a0cc !important;
+      }
+      
+      &.active {
+        background-color: #82a0cc !important;
+      }
+
+    }
+
+    text {
+      color: #fff !important;
+    }
+
+    .game-list .jeu {
+      border: 2px solid #034694 !important;
+    }
+
+    .game-list .game-title {
+      color: #034694 !important;
+    }
+
+    .game-list .game-category {
+      color: #034694 !important;
+    }
+
+    .top-container .general-info {
+
+      label {
+        color: #034694 !important;
+      }
+
+      #title {
+        border: 2px solid #034694 !important;
+      }
+
+      #description {
+        border: 2px solid #034694 !important;
+      }
+    }
+
+    .top-container .category-container {
+
+        label {
+          color: #034694 !important;
+        }
+    }
+
+    .question-form {
+
+      label {
+        color: #034694 !important;
+      }
+
+      input {
+        border: 1px solid #034694 !important;
+      }
+
+      select, textarea {
+        border: 1px solid #034694 !important;
+      }
+
+      .choice-container {
+
+        .choice-index {
+          color: #034694 !important;
+        }
+
+        input {
+          border: 1px solid #034694 !important;
+        }
+
+        label {
+          color: #034694 !important;
+        }
+      }
+    }
+
+    .join-game-form-section h2 {
+      color: #034694 !important;
+    }
+
+    .game-list-container h2 {
+      color: #034694 !important;
+    }
+
+    .games-container .available-title {
+      color: #034694 !important;
+    }
+
+    .game-content {
+      background-color: #e489ca !important;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) !important;
+
+      .game-section-one, .game-section-two {
+        background-color: #d176b7 !important;
+      }
+    }
+
+    .waiting-room-container .player-waiting h2 {
+      color: #034694 !important;
+    }
+
+    .waiting-room-container .players-list {
+      border: 3px solid #034694 !important;
+    }
+
+    .waiting-room-container .players-list .player:first-child {
+      border: 2px solid #034694 !important;
+      box-shadow:
+        0 0 15px #034694,
+        0 0 30px  #034694,
+        0 0 45px  #034694,
+        0 0 60px  #034694 !important;
+      transition: box-shadow 0.5s ease-in-out;
+      animation: glowing 2s infinite alternate;
+    }
+
+    @keyframes glowing {
+      0% {
+          box-shadow:
+              0 0 1.5px  #034694,
+              0 0 3px  #034694,
+              0 0 4.5px  #034694,
+              0 0 6px  !important;
+      }
+      50% {
+          box-shadow:
+              0 0 3px  #034694,
+              0 0 6px  #034694,
+              0 0 9px  #034694,
+              0 0 12px !important;
+      }
+      100% {
+          box-shadow:
+              0 0 1.5px  #034694,
+              0 0 3px  #034694,
+              0 0 4.5px  #034694,
+              0 0 6px  !important;
+      }
+  }
+
+    .players-container {
+      background-color: #e489ca !important;
+
+      .player {
+        background-color: #d176b7 !important;
+      }
+
+      .player-score {
+        color: #fff !important;
+      }
+    }
+
+    .game-container .question .value {
+      color: #034694 !important;
+    }
+
+    .podium-player  {
+      background: #e489ca !important;
+
+      .podium-points {
+        color: #034694 !important;
+      }
+    }
+  }
+
+  [data-theme='stitch'] {
+    .section .container .row .elements h2 {
+      color: #b08cc5 !important;
+    }
+
+    .topbar {
+      background-color: #001d4f !important;
+    }
+
+    .list-header .tab {
+      color: #fff !important;
+
+      &:hover {
+        background-color: #001d4f !important;
+      }
+      
+      &.active {
+        background-color: #001d4f !important;
+      }
+
+    }
+
+    text {
+      color: #fff !important;
+    }
+
+    button {
+      background-color: #5facf4 !important;
+      border: #2d679d  !important;
+      color: white !important;
+
+      &:hover {
+        background-color: #2d679d  !important;
+      }
+
+      &:active {
+        background-color: #2d679d  !important;
+      }
+
+      &:focus {
+        background-color: #2d679d !important;
+      }
+    }
+
+    background-image: linear-gradient(#4499e8, #001d4f);
+
+    .game-content {
+      background-color: #b08cc5 !important;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) !important;
+
+      .game-section-one, .game-section-two {
+        background-color: #9572a8 !important;
+      }
+    }
+
+    .toggle-container .toggle-label {
+      color: #ffd700 !important;
+    }
+
+    .players-container {
+      background-color: #b08cc5 !important;
+
+      .player {
+        background-color: #9572a8 !important;
+      }
+
+      .player-score {
+        color: #fff !important;
+      }
+    }
+
+    .answers .answer .selected-answer {
+      background-color: #001d4f !important;
+    }
+
+     .podium-player  {
+      background: #b08cc5 !important;
+    }
+  }
+
+

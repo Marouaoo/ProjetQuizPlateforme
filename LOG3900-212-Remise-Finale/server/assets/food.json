@@ -1,0 +1,71 @@
+{
+    "id": "0MN0M",
+    "title": "Guess the origin country",
+    "description": "Devinez le pays d'origine de ces plats!",
+    "duration": 50,
+    "lastModification": "2021-03-21T20:20:39+00:00",
+    "isVisible": false,
+    "questions": [
+        {
+            "type": "QCM",
+            "text": "De quel province canadienne vient la poutine?",
+            "points": 40,
+            "choices": [
+                {
+                    "text": "Alberta",
+                    "isCorrect": false
+                },
+                {
+                    "text": "Québec",
+                    "isCorrect": true
+                },
+                {
+                    "text": "Nouveau-Brunswick",
+                    "isCorrect": false
+                },
+                {
+                    "text": "Saskatchewan",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "type": "QCM",
+            "text": "De quel pays vient le pastel de nata?",
+            "points": 40,
+            "choices": [
+                {
+                    "text": "Italie",
+                    "isCorrect": false
+                },
+                {
+                    "text": "Espagne",
+                    "isCorrect": false
+                },
+                {
+                    "text": "Portugal",
+                    "isCorrect": true
+                },
+                {
+                    "text": "France",
+                    "isCorrect": false
+                }
+            ]
+        },
+        {
+            "type": "QCM",
+            "text": "Vrai ou faux? Les tacos viennent originalement du Brézil.",
+            "points": 20,
+            "choices": [
+                {
+                    "text": "Vrai",
+                    "isCorrect": false
+                },
+                {
+                    "text": "Faux",
+                    "isCorrect": true
+                }
+            ]
+        }
+    ]
+}

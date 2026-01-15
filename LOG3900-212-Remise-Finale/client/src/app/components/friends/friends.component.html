@@ -1,0 +1,88 @@
+<div class="friends-container bubble">
+    <h2>👥 {{ 'Rechercher des amis' | translate }}</h2>
+    <div class="search-bar">
+        <input type="text" placeholder="🔍 {{ 'Rechercher un ami...' | translate }}" [(ngModel)]="query" (input)="onSearch()" />
+    </div>
+
+    <div class="friend-requests-container bubble">
+        @if (userService.user.friendRequestsReceived.length || userService.user.friendRequestsSent.length || userService.user.friends.length) {
+        <h2>📬 {{ "Demandes d'amis actives" | translate }}</h2>
+        <div class="user-cards-scrollable">
+            @for (user of requests; track user; let index = $index) {
+            <div class="user-card">
+                <div class="avatar-container">
+                    <img [src]="getUserAvatar(user.avatar)" class="avatar" [alt]="user.username" />
+                    <span
+                        class="status-dot"
+                        [ngClass]="{
+                            connected: user.status === 'connected',
+                            occupied: user.status === 'occupied',
+                            offline: user.status !== 'connected' && user.status !== 'occupied'
+                        }"
+                    ></span>
+                </div>
+
+                <div class="user-info">
+                    <div class="username">{{ user.username }}</div>
+                    <div class="actions">
+                        @if(user._id !== userService.userId) { @if (userService.user.friends.includes(user._id)) {
+                        <button (click)="removeFriend(user._id); $event.stopPropagation()">❌ {{ 'Retirer' | translate }}</button>
+                        } @if(userService.user.friendRequestsReceived.includes(user._id)) {
+                        <ng-container>
+                            <button (click)="acceptRequest(user._id); $event.stopPropagation()">✅ {{ 'Accepter' | translate }}</button>
+                            <button (click)="denyRequest(user._id); $event.stopPropagation()">🚫 {{ 'Refuser' | translate }}</button>
+                        </ng-container>
+                        } @if(!userService.user.friends.includes(user._id) && !userService.user.friendRequestsReceived.includes(user._id) &&
+                        !userService.user.friendRequestsSent.includes(user._id)) {
+                        <button (click)="addFriend(user._id); $event.stopPropagation()">➕ {{ 'Ajouter' | translate }}</button>
+                        } @if(!userService.user.friends.includes(user._id) && !userService.user.friendRequestsReceived.includes(user._id) &&
+                        userService.user.friendRequestsSent.includes(user._id)) {
+                        <button (click)="cancelRequest(user._id); $event.stopPropagation()">❌ {{ 'Annuler' | translate }}</button>
+                        }}
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        }
+
+        <h2>🌍 {{ 'All players' | translate }}</h2>
+        <div class="user-cards-scrollable">
+            @for (user of searchResults; track user; let index = $index) {
+            <div class="user-card">
+                <div class="avatar-container">
+                    <img [src]="getUserAvatar(user.avatar)" class="avatar" [alt]="user.username" />
+                    <span
+                        class="status-dot"
+                        [ngClass]="{
+                            connected: user.status === 'connected',
+                            occupied: user.status === 'occupied',
+                            offline: user.status !== 'connected' && user.status !== 'occupied'
+                        }"
+                    ></span>
+                </div>
+
+                <div class="user-info">
+                    <div class="username">{{ user.username }}</div>
+                    <div class="actions">
+                        @if(user._id !== userService.userId) { @if (userService.user.friends.includes(user._id)) {
+                        <button (click)="removeFriend(user._id); $event.stopPropagation()">❌ {{ 'Retirer' | translate }}</button>
+                        } @if(userService.user.friendRequestsReceived.includes(user._id)) {
+                        <ng-container>
+                            <button (click)="acceptRequest(user._id); $event.stopPropagation()">✅ {{ 'Accepter' | translate }}</button>
+                            <button (click)="denyRequest(user._id); $event.stopPropagation()">🚫 {{ 'Refuser' | translate }}</button>
+                        </ng-container>
+                        } @if(!userService.user.friends.includes(user._id) && !userService.user.friendRequestsReceived.includes(user._id) &&
+                        !userService.user.friendRequestsSent.includes(user._id)) {
+                        <button (click)="addFriend(user._id); $event.stopPropagation()">➕ {{ 'Ajouter' | translate }}</button>
+                        } @if(!userService.user.friends.includes(user._id) && !userService.user.friendRequestsReceived.includes(user._id) &&
+                        userService.user.friendRequestsSent.includes(user._id)) {
+                        <button (click)="cancelRequest(user._id); $event.stopPropagation()">❌ {{ 'Annuler' | translate }}</button>
+                        }}
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

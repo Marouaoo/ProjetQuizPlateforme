@@ -1,0 +1,91 @@
+<div [ngClass]="{ 'tutorial-overlay': tutorialTrackerService.isInTutorial }">
+    <div>
+        <app-topbar></app-topbar>
+    </div>
+    <div class="header-container" [ngClass]="{ 'visible-tutorial': tutorialTrackerService.currentStep === 10 }">
+        <div class="go-back">
+            <i (click)="goBack()" class="fa fa-arrow-left"></i>
+        </div>
+        <div class="title-container">
+            <h1>{{ 'Administration des jeux' | translate }}</h1>
+        </div>
+        <button class="button-create" (click)="createQuiz()" translate>{{ 'Créer un quiz' | translate }}</button>
+    </div>
+    <div class="sort-container" [ngClass]="{ 'visible-tutorial': tutorialTrackerService.currentStep === 10 }">
+        <label for="sort" class="sort-title" translate>{{ 'Trier par:' | translate }}</label>
+        <select [(ngModel)]="selectedCategory" [ngModelOptions]="{ standalone: true }" (change)="sortByCategory(selectedCategory)">
+            <option value="tous" translate>{{ 'Tous les quiz' | translate }}</option>
+            @for (category of categories; track category;) {
+            <option [value]="category">{{ category | translate }}</option>
+            }
+        </select>
+    </div>
+    <div class="games-container" [ngClass]="{ 'visible-tutorial': tutorialTrackerService.currentStep === 11 }">
+        <div class="game-list">
+            @for(quiz of quizzes; track quizzes) { @if (quiz.isVisible || quiz.author === userService.user.username) {
+            <div class="jeu">
+                <div class="game-title">{{ quiz.title | translate }}</div>
+                <p class="game-author">{{ 'Auteur:' | translate }} {{ quiz.author }}</p>
+                @if (quiz.categories && quiz.categories.length > 0) {
+
+                <p class="game-category">
+                    {{ 'Catégories:' | translate }}
+                    @for (category of quiz.categories; track category;) {
+                    {{ category | translate }}@if($last){}@else{,} }
+                </p>
+                } @if (quiz.author === userService.user.username) {
+                <div class="game-visibility">
+                    <div class="visibility-title" translate>{{ 'Visibilité:' | translate }}</div>
+                    @if(quiz.isVisible) {
+                    <p class="visibility" (click)="toggleQuizzVisibility(quiz._id.toString())">
+                        <i class="fa fa-eye" id="fa"></i>
+                    </p>
+                    } @else {
+                    <p class="visibility" (click)="toggleQuizzVisibility(quiz._id.toString())">
+                        <i class="fa fa-eye-slash" id="fa" (click)="toggleQuizzVisibility(quiz._id.toString())"></i>
+                    </p>
+                    }
+                </div>
+                }
+                <div class="buttons">
+                    <p class="quiz-modify" (click)="modifyQuiz(quiz._id.toString())">
+                        <i id="fa" class="fa fa-pencil"></i>
+                    </p>
+                    <p class="quiz-delete" (click)="openDeleteModal(quiz._id.toString())">
+                        <i class="fas fa-trash"></i>
+                    </p>
+                </div>
+                <p class="game-last-modify">{{ 'Dernière modification:' | translate }} {{ quiz.lastModified | date: 'HH:mm:ss' }}</p>
+            </div>
+            } }
+        </div>
+    </div>
+
+    @if(showDeleteModal) {
+    <div class="modal-overlay">
+        <div class="modal">
+            <h3 translate>{{ 'Êtes-vous sûr de vouloir supprimer ce jeu ?' | translate }}</h3>
+            <div class="modal-actions">
+                <button class="button-common" (click)="closeDeleteModal()" translate>{{ 'Annuler' | translate }}</button>
+                <button class="button-common" (click)="deleteQuiz()" translate>{{ 'Supprimer' | translate }}</button>
+            </div>
+        </div>
+    </div>
+    } @if (tutorialTrackerService.isInTutorial) {
+    <div class="tutorial-message">
+        @if (tutorialTrackerService.currentStep === 10) {
+        <p>{{ 'tuto10' | translate }}</p>
+        } @if (tutorialTrackerService.currentStep === 11) {
+        <p>{{ 'tuto11' | translate }}</p>
+        }
+    </div>
+    <div class="tutorial-buttons">
+        @if(tutorialTrackerService.currentStep === 11) {
+        <button (click)="tutorialTrackerService.resetTutorial()">{{ 'tutoEnd' | translate }}</button>
+        } @else {
+        <button (click)="tutorialTrackerService.resetTutorial()">{{ 'tutoClose' | translate }}</button>
+        <button (click)="tutorialTrackerService.nextTutorialStep()">{{ 'tutoNext' | translate }}</button>
+        }
+    </div>
+    }
+</div>

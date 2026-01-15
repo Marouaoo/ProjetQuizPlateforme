@@ -1,0 +1,169 @@
+<h1>{{ 'Paramètres de compte' | translate }}</h1>
+
+<!-- ✅ Zone d'affichage des messages -->
+@if(successMessage) {
+<div class="success-message">{{ successMessage | translate }}</div>
+} @if(errorMessage) {
+<div class="error-message">{{ errorMessage | translate }}</div>
+}
+
+<div class="account-settings">
+    <div class="account-row">
+        <div class="label">{{ "Nom d'utilisateur :" | translate }}</div>
+
+        <div class="username-container">
+            <!-- ✅ Affichage du pseudo en mode lecture seule -->
+            @if(!isEditingUsername) {
+            <p class="username-text">{{ username }}</p>
+            }
+
+            <!-- ✅ Champ d'édition du pseudo -->
+            <div class="input-error-container">
+                <!-- ✅ Champ d'édition -->
+                @if(isEditingUsername) {
+                <input 
+                    type="text"
+                    [(ngModel)]="username"
+                    (input)="onUsernameChange()"
+                    placeholder="{{'Nouveau nom d \'utilisateur' | translate }} " 
+                    class="username-input"
+                    maxlength="15"
+                />
+                }
+
+                <!-- ✅ Message d'erreur sous l'input -->
+                @if(isUsernameAvailable === false) {
+                <div class="error-message">{{ "Ce pseudonyme est déjà pris." | translate }}</div>
+                }
+            </div>
+            <!-- ✅ Bouton Modifier -->
+            @if(!isEditingUsername) {
+            <p class="edit-btn" (click)="enableUsernameEdit()"><i id="fa" class="fa fa-pencil"></i></p> }
+
+            <!-- ✅ Bouton Enregistrer -->
+            @if(isEditingUsername) {
+            <button class="save-btn" (click)="modifyUsername()">{{ "Enregistrer" | translate }}</button> }
+        </div>
+    </div>
+
+    <!-- ✅ Avatar aligné -->
+    <div class="account-row">
+        <div class="label">Avatar :</div>
+        <div class="avatars">
+            @for(avatarOption of avatars; track avatarOption) {
+            <div class="avatar-wrapper" (click)="modifyAvatar(avatarOption.id)">
+                <img
+                    [src]="avatarOption.preview"
+                    [class.selected]="avatar === avatarOption.id"
+                    [class.disabled]="!userService.user.avatarsAquired.includes(avatarOption.id)"
+                    (click)="modifyAvatar(avatarOption.id)"
+                    alt="Avatar"
+                    class="avatar-img"
+                />
+                @if(!userService.user.avatarsAquired.includes(avatarOption.id)){
+                <div class="avatar-icons">
+                    <div class="lock-icon">🔒</div>
+                    @if(userService.user.money > 150) {
+                    <div class="shop-icon">🛍️</div>
+                    }
+                </div>
+                }
+            </div>
+
+            }
+        </div>
+    </div>
+
+    <!-- ✅ Adresse e-mail alignée -->
+    <div class="account-row">
+        <div class="label">{{ "Adresse courriel" | translate}} :</div>
+        <p class="user-email">{{ userService.user.email }}</p>
+    </div>
+
+    <!-- ✅ Modification du mot de passe alignée -->
+    <div class="account-row">
+        <div class="label">{{ "Mot de passe" | translate }} :</div>
+        <div class="password-container">
+            <!-- ✅ Mot de passe masqué par défaut -->
+            @if(!isEditingPassword) {
+            <p class="hidden-password">{{ isPasswordVisible ? userService.user.password : '****************' }}</p>
+            <!-- ✅ Bouton pour voir/cacher le mot de passe -->
+            <span class="toggle-password" (click)="togglePasswordVisibility()">
+                <i class="fa" [ngClass]="isPasswordVisible ? 'fa-eye' : 'fa-eye-slash'"></i>
+            </span>
+            }
+
+            <!-- ✅ Icône crayon pour activer la modification -->
+            @if(!isEditingPassword) {
+            <p class="edit-btn" (click)="enablePasswordEdit()"><i id="fa" class="fa fa-pencil"></i></p> }
+
+            <!-- ✅ Champ de modification du mot de passe -->
+            @if(isEditingPassword) {
+            <input [type]="isPasswordVisible ? 'text' : 'password'" [(ngModel)]="newPassword" placeholder="Nouveau mot de passe" />
+            <span class="toggle-password" (click)="togglePasswordVisibility()">
+                <i class="fa" [ngClass]="isPasswordVisible ? 'fa-eye' : 'fa-eye-slash'"></i>
+            </span>
+            }
+
+            <!-- ✅ Bouton Enregistrer -->
+            @if(isEditingPassword) {
+            <button class="save-btn" (click)="saveNewPassword()">{{ "Enregistrer" | translate }}</button> }
+        </div>
+    </div>
+
+    <!-- ✅ Sélection de la langue alignée -->
+    <div class="account-row">
+        <div class="label">{{ "Langue :" | translate }} </div>
+        <select [(ngModel)]="language" (change)="switchLanguage(language)">
+            @for(lang of languageOptions; track lang) {
+            <option [value]="lang">@if(lang === fr) { Français (Par défaut) } @else if(lang === en) { English }</option>
+            }
+        </select>
+    </div>
+
+    <!-- ✅ Sélection du thème alignée -->
+    <div class="account-row">
+        <div class="label">Thème :</div>
+        <div class="themes">
+            @for(theme of themes; track theme) {
+            <div class="theme-wrapper" (click)="modifyTheme(theme.id)">
+                <img
+                    [src]="theme.preview"
+                    [class.selected]="selectedTheme === theme.id"
+                    [class.disabled]="!userService.user.themesAquired.includes(theme.id)"
+                    (click)="modifyTheme(theme.id)"
+                    [alt]="theme.name"
+                    class="theme-img"
+                />
+
+                @if(!userService.user.themesAquired.includes(theme.id)) {
+                <div class="theme-icons">
+                    <div class="lock-icon">🔒</div>
+                    @if(userService.user.money > 200) {
+                    <div class="shop-icon">🛍️</div>
+                    }
+                </div>
+                }
+            </div>
+            }
+        </div>
+    </div>
+</div>
+
+@if(modalOpen) {
+    <div class="modal-overlay">
+        <div class="modal">
+            @if (purchaseAvatarId) {
+                <p>{{ "Cet item a un cout de 150$." | translate }}</p>
+            }
+            @if (purchaseThemeId) {
+                <p>{{ "Cet item a un cout de 200$." | translate }}</p>
+            }
+            <p>{{ "Êtes-vous sûr de vouloir l'acheter ?" | translate }}</p>
+            <div class="modal-button-container">
+                <button class="modal-button" (click)="closeModal()">{{ "Annuler" | translate }}</button>
+                <button class="modal-button" (click)="confirmPurchase()">{{ "Confirmer" | translate }}</button>
+            </div>
+        </div>
+    </div>
+} 

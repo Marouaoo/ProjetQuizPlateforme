@@ -1,0 +1,124 @@
+<div class="register-container">
+    <form class="register-form">
+        <h3>Enregistrement</h3>
+
+        <div class="form-section">
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Courriel"
+                [(ngModel)]="email"
+                (ngModelChange)="onEmailChange($event)"
+                (blur)="validateEmail(email)"
+                required
+                #emailInput="ngModel"
+                [class.filled]="email.length > 0"
+            />
+            <label for="username">Courriel</label>
+            @if (emailError) {
+                <div class="error-message">
+                    <p>{{ emailError }}</p>
+                </div>
+            }
+        </div>
+
+        <div class="form-section">
+            <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Nom d'utilisateur"
+                [(ngModel)]="username"
+                (ngModelChange)="onUsernameChange($event)"
+                maxlength="15"
+                required
+                #usernameInput="ngModel"
+                [class.filled]="username.length > 0"
+            />
+            <label for="username">Nom d'utilisateur</label>
+            @if (usernameError) {
+                <div class="error-message">
+                    <p>{{ usernameError }}</p>
+                </div>
+            }
+        </div>
+
+        <div class="form-section">
+            <input
+                [type] = "isPasswordVisible ? 'text' : 'password'"
+                id="password"
+                name="password"
+                placeholder="Mot de passe"
+                [(ngModel)]="password"
+                (ngModelChange)="onPasswordChange($event)"
+                maxlength="25"
+                required
+                #passwordInput="ngModel"
+                [class.filled]="password.length > 0"
+            />
+            <label for="password">Mot de passe</label>
+            <span class="toggle-password" (click)="togglePasswordVisibility()">
+                <i class="fa" [ngClass]="isPasswordVisible ? 'fa-eye' : 'fa-eye-slash' "></i>
+            </span>
+        </div>
+
+        <div class="password-validation">
+            <span [ngClass]="{ valid: passwordValidation.hasUpperCase, invalid: !passwordValidation.hasUpperCase }">
+                <i class="fa" [ngClass]="passwordValidation.hasUpperCase ? 'fas fa-check-square' : 'fa-times'"></i> Au moins une lettre majuscule
+            </span>
+            <span [ngClass]="{ valid: passwordValidation.hasNumber, invalid: !passwordValidation.hasNumber }">
+                <i class="fa" [ngClass]="passwordValidation.hasNumber ? 'fas fa-check-square' : 'fa-times'"></i> Au moins un chiffre
+            </span>
+            <span [ngClass]="{ valid: passwordValidation.hasSpecialChar, invalid: !passwordValidation.hasSpecialChar }">
+                <i class="fa" [ngClass]="passwordValidation.hasSpecialChar ? 'fas fa-check-square' : 'fa-times'"></i> Au moins un caractère spécial
+                (!&#64;#$%^&*)
+            </span>
+            <span [ngClass]="{ valid: passwordValidation.isValidLength, invalid: !passwordValidation.isValidLength }">
+                <i class="fa" [ngClass]="passwordValidation.isValidLength ? 'fas fa-check-square' : 'fa-times'"></i> Au moins 6 caractères de longueur
+            </span>
+        </div>
+
+        <div class="form-section">
+            <input
+                [type] = "isPassword2Visible ? 'text' : 'password'"
+                id="password"
+                name="password2"
+                placeholder="Réecrire mot de passe"
+                [(ngModel)]="password2"
+                (ngModelChange)="onPassword2Change($event)"
+                required
+                #passwordInput="ngModel"
+                [class.filled]="password2.length > 0"
+            />
+            <label for="password2">Réecrire mot de passe</label>
+            <span class="toggle-password" (click)="togglePassword2Visibility()">
+                <i class="fa" [ngClass]="isPassword2Visible ? 'fa-eye' : 'fa-eye-slash' "></i>
+            </span>
+        </div>
+        @if (passwordMismatchError) {
+            <div  class="error-message">
+                <p>{{ passwordMismatchError }}</p>
+            </div>
+        }
+
+        <div class="form-section">
+            <h4>Choisir un avatar</h4>
+            <div class="avatar-selection">
+                <div class="avatars">
+                    <button type="arrow" class="arrow-left" (click)="scrollAvatars('left')">&#8592;</button>
+                    @for (avatar of visibleAvatars; track avatar; let index = $index) {
+                        <div [class.selected]="selectedAvatar === (startIndex + index)" class="avatar">
+                            <img [src]="avatar.preview" alt="avatar" (click)="selectAvatar(index)" />
+                        </div>
+                    }
+                    <button type="arrow" class="arrow-right" (click)="scrollAvatars('right')">&#8594;</button>
+                </div>
+            </div>
+        </div>
+
+        <button class="create-button" type="submit" [disabled]="!isButtonEnabled" [ngClass]="{ enabled: isButtonEnabled }" (click)="register()">
+            S'enregistrer
+        </button>
+    </form>
+</div>

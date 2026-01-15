@@ -1,0 +1,179 @@
+<app-topbar></app-topbar>
+
+<div class="go-back">
+    <i (click)="goBack()" class="fa fa-arrow-left"></i>
+</div>
+
+<div class="create-qcm-title">
+    <h1>{{ "Créer un quiz" | translate }}</h1>
+</div>
+
+<form>
+    <div class="top-container">
+        <div class="general-info">
+            <div>
+                <label for="title">{{ "Titre du quiz:" | translate }}</label>
+                <input
+                    type="text"
+                    id="title"
+                    [(ngModel)]="quizService.quiz.title"
+                    [ngModelOptions]="{ standalone: true }"
+                    name="title"
+                    required
+                    maxlength="25"
+                />
+            </div>
+
+            <div>
+                <label for="description">Description: </label>
+                <input
+                    id="description"
+                    [(ngModel)]="quizService.quiz.description"
+                    [ngModelOptions]="{ standalone: true }"
+                    name="description"
+                    required
+                    maxlength="100"
+                />
+            </div>
+
+            <div class="time-container">
+                <label for="duration">{{ "Temps alloué par question (secondes):" | translate }}</label>
+                <div class="time-box">
+                    <button type="button" (click)="decrementTime()" class="time-arrow" [disabled]="quizService.quiz.duration === 10">-</button>
+                    <div id="duration" class="time-display">{{ quizService.quiz.duration }}</div>
+                    <button type="button" (click)="incrementTime()" class="time-arrow" [disabled]="quizService.quiz.duration === 60">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="category-container">
+            <label for="category">{{ "Catégorie:" | translate }}</label>
+            <div class="category-options">
+                @for (category of categories; track category; let i = $index) {
+                <label>
+                    <input type="checkbox" [value]="category" [(ngModel)]="selectedCategories[i]" [ngModelOptions]="{ standalone: true }" />
+                    {{ category  | translate}}
+                </label>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="questions-container">
+        <div class="create-question-container">
+            <app-create-question></app-create-question>
+        </div>
+
+        <div class="question-list">
+            <div class="list-header">
+                <div class="tab" [class.active]="selectedList === 'quizQuestions'" (click)="toggleList('quizQuestions')">{{ "Questions du quiz" | translate }}</div>
+                <div class="tab" [class.active]="selectedList === 'questionBank'" (click)="toggleList('questionBank')">{{ "Banque de questions" | translate }}</div>
+            </div>
+            @if (selectedList === 'questionBank') {
+            <div class="scrollable-box">
+                @for (question of questionService.questions; track question) {
+                <div class="question-box">
+                    <div class="question-content">
+                        <p class="question-p">Question: {{ question.text }} ({{ question.type }})</p>
+                        <p class="points-p">Points: {{ question.points }}</p>
+                        <p>{{ "Auteur:" | translate }} {{ question.author }}</p>
+                        @if (questionService.isQCM(question)){
+                        <ul>
+                            @for (choice of question.choices; track choice; let index = $index) {
+                            <li>{{ "Choix" | translate }} {{ index + 1 }}: {{ choice.text }}</li>
+                            }
+                        </ul>
+                        } @if (questionService.isQRE(question)) {
+                        <ul>
+                            <li>{{ "Bonne réponse:" | translate }} {{ question.correctAnswer }}</li>
+                            <li>
+                                <p>{{ "Borne inférieure:" | translate }} {{ question.minRange }}</p>
+                                <p>{{ "Borne supérieure:" | translate }} {{ question.maxRange }}</p>
+                            </li>
+                            <li>Tolerance: {{ question.tolerance }}</li>
+                        </ul>
+                        }
+                        <div class="buttons">
+                            @if(!isQuestionInQuiz(question._id.toString())) {
+                            <button type="button" class="quiz-add" (click)="questionService.addQuestion(question._id.toString())">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            }
+                            <button type="button" class="quiz-modify" (click)="modifyQuestion(question._id.toString())">
+                                <i id="fa" class="fa fa-pencil"></i>
+                            </button>
+                            <button type="button" class="quiz-delete" (click)="openDeleteModal(question._id.toString())">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+            } @if (selectedList === 'quizQuestions') {
+            <div cdkDropList class="scrollable-box" (cdkDropListDropped)="drop($event)">
+                @for (question of quizService.quiz.questions; track question; let index = $index) {
+                <div class="question-box" cdkDrag>
+                    <div class="question-content">
+                        <p class="question-p">Question {{ index + 1 }}: {{ question.text }} ({{ question.type }})</p>
+                        <p class="points-p">Points: {{ question.points }}</p>
+                        <p>{{ "Auteur:" | translate }} {{ question.author }}</p>
+                        @if (questionService.isQCM(question)){
+                        <ul>
+                            @for (choice of question.choices; track choice; let index = $index) {
+                            <li>{{ "Choix" | translate }} {{ index + 1 }}. {{ choice.text }}</li>
+                            }
+                        </ul>
+                        } @if (questionService.isQRE(question)){
+                        <ul>
+                            <li>{{ "Bonne réponse:" | translate }} {{ question.correctAnswer }}</li>
+                            <li>
+                                <p>{{ "Borne inférieure:" | translate }} {{ question.minRange }}</p>
+                                <p>{{ "Borne supérieure:" | translate }} {{ question.maxRange }}</p>
+                            </li>
+                            <li>Tolerance: {{ question.tolerance }}</li>
+                        </ul>
+                        }
+                        <div class="buttons">
+                            <button type="button" class="quiz-modify" (click)="modifyQuestionInQuiz(question._id.toString())">
+                                <i id="fa" class="fa fa-pencil"></i>
+                            </button>
+                            <button type="button" class="quiz-delete" (click)="openRemoveModal(question._id.toString())">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+            }
+        </div>
+    </div>
+
+    <button type="submit" class="submit-btn" (click)="submitQuiz()">{{ "Sauvegarder le quiz" | translate }}</button>
+</form>
+
+@if(showDeleteModal) {
+<div class="modal-overlay">
+    <div class="modal">
+        <h3>{{ "Êtes-vous sûr de vouloir supprimer cette question ?" | translate }}</h3>
+        <div class="modal-actions">
+            <button class="button-common" (click)="closeDeleteModal()">{{ "Annuler" | translate }}</button>
+            <button class="button-common" (click)="deleteQuestion()">{{ "Supprimer" | translate }}</button>
+        </div>
+    </div>
+</div>
+} @if(showRemoveModal) {
+<div class="modal-overlay">
+    <div class="modal">
+        <h3>{{ "Êtes-vous sûr de vouloir retirer cette question ?" | translate }}</h3>
+        <div class="modal-actions">
+            <button class="button-common" (click)="closeRemoveModal()">{{ "Annuler" | translate }}</button>
+            <button class="button-common" (click)="removeQuestion()">{{ "Retirer" | translate }}</button>
+        </div>
+    </div>
+</div>
+} @if (errorMessage) {
+<div class="error-message">
+    {{ errorMessage | translate}}
+</div>
+}
